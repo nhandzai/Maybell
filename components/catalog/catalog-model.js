@@ -2,7 +2,17 @@ const db = require('../../library/models');
 const { searchProducts, searchFilterProducts } = require('../../library/search');
 
 async function fetchAllProducts() {
-  return await db.products.findAll();
+  const products = await db.products.findAll({
+    include: [
+      {
+        model: db.productImages,
+        attributes: ['image'],
+        where: { isMain: true, id: db.sequelize.col('productImages.productId') }, 
+        required: false 
+      }
+    ]
+  });
+  return products;
 }
 
 async function fetchProducts(query) {

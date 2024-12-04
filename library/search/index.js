@@ -6,6 +6,15 @@ async function searchProducts(query) {
   }
 
   const products = await db.products.findAll({
+  
+      include: [
+        {
+          model: db.productImages,
+          attributes: ['image'],
+          where: { isMain: true, id: db.sequelize.col('productImages.productId') }, 
+          required: false 
+        }
+      ],
     where: {
       [db.Sequelize.Op.or]: [
         { name: { [db.Sequelize.Op.like]: `%${query}%` } },
@@ -34,7 +43,7 @@ async function searchFilterProducts(minPrice, maxPrice, queries) {
       [db.Sequelize.Op.lte]: maxPrice,
     };
   }
- 
+
 
   if (queries && queries.length > 0) {
     const categoryQueries = queries.filter(query =>
@@ -47,74 +56,107 @@ async function searchFilterProducts(minPrice, maxPrice, queries) {
       ['XS', 'S', 'M', 'L', 'XL'].includes(query)
     );
 
-    if (categoryQueries.length > 0) {
-      whereClause.category = {
-        [db.Sequelize.Op.in]: categoryQueries,
-      };
-    }
+
 
     if (brandQueries.length > 0) {
       whereClause.brand = {
         [db.Sequelize.Op.in]: brandQueries,
       };
     }
+    if (categoryQueries.length > 0) {
+      include.push({
+        model: db.categories,
 
-    
+        where: {
+          category: {
+            [db.Sequelize.Op.in]: categoryQueries,
+          }
+        },
+        required: true,
+      });
+    }
+
+
     if (sizeQueries.length > 0) {
       include.push({
         model: db.productSizes,
-        as: 'sizes',
+
         where: {
           size: {
             [db.Sequelize.Op.in]: sizeQueries,
           }
         },
-        required: true,  
+        required: true,
       });
     }
   }
- 
+  include.push({
+    model: db.productImages,
 
-    const products = await db.products.findAll({
-      where: whereClause,
-      include: include,
-    });
-    console.log("products", products);
-    return products;
-  
-}
-async function searchProductsByField({
-  field,
-  value,
-  excludeId,
-  limit,
 
-}) {
-  if (!field || !value) {
-    throw new Error('Field and value are required.');
-  }
+    where: { isMain: true },
+    required: false,
+  })
 
-  const whereClause = {
-    [field]: {
-      [db.Sequelize.Op.eq]: value,
-    },
-  };
-
-  if (excludeId) {
-    whereClause.id = {
-      [db.Sequelize.Op.ne]: excludeId,
-    };
-  }
-
-  const queryOptions = {
+  const products = await db.products.findAll({
     where: whereClause,
-    limit: limit || 10,
-  };
-
-  const products = await db.products.findAll(queryOptions);
+    include: include,
+  });
 
   return products;
+
 }
+async function searchProductsByField({ 
+  productId,
+  limit,
+}) {
+ 
+
+const productCategories = await db.categories.findAll({
+  where: { productId },
+  attributes: ['category'], 
+});
+
+const categoryIds = productCategories.map(item => item.category);
+
+
+const queryOptions = {
+  where: {
+    id: {
+      [db.Sequelize.Op.ne]: productId, 
+    },
+  },
+  include: [
+    {
+      model: db.categories,
+      where: {
+        category: {
+          [db.Sequelize.Op.in]: categoryIds, 
+        },
+      },
+      required: true,
+    },
+    {
+      model: db.productImages,
+      attributes: ['image'],
+      where: { isMain: true },
+      required: false,
+    },
+  ],
+  limit: limit || 10, 
+};
+  queryOptions.include.push({
+    model: db.productImages,
+    attributes: ['image'],
+    where: { isMain: true },
+    required: false,
+  });
+
+  const relatedProducts = await db.products.findAll(queryOptions);
+
+  return relatedProducts;
+}
+
 
 
 

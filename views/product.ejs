@@ -28,23 +28,23 @@
   <!-- image gallery -->
 
   <div class="container mx-auto px-4">
-    <img class="w-full" src="<%= product.imageLink %>" alt="<%= product.name %> image" />
+    <img class="w-full" src=<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
 
     <div class="mt-3 grid grid-cols-4 gap-4">
       <div>
-        <img class="cursor-pointer" src="<%= product.imageLink %>" alt="<%= product.name %> image" />
+        <img class="cursor-pointer" src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
       </div>
 
       <div>
-        <img class="cursor-pointer" src="<%= product.imageLink %>" alt="<%= product.name %> image" />
+        <img class="cursor-pointer" src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
       </div>
 
       <div>
-        <img class="cursor-pointer" src="<%= product.imageLink %>" alt="<%= product.name %> image" />
+        <img class="cursor-pointer" src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
       </div>
 
       <div>
-        <img class="cursor-pointer" src="<%= product.imageLink %>" alt="<%= product.name %> image" />
+        <img class="cursor-pointer" src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
       </div>
     </div>
     <!-- /image gallery  -->
@@ -59,17 +59,19 @@
     <p class="mt-5 font-bold">
       Availability:
       <span class="<%= product.stockQuantityy > 0 ? 'text-green-600' : 'text-red-600' %>">
-        <%= product.stockQuantityy> 0 ? 'In Stock' : 'Out of Stock' %>
+        <%= product.stockQuantity> 0 ? 'In Stock' : 'Out of Stock' %>
       </span>
     </p>
     <p class="mt-5 font-bold">Stock Quantity: <span class="font-normal">
-        <%=product.stockQuantityy %>
+        <%=product.stockQuantity %>
       </span></p>
     <p class="mt-5 font-bold"> Brand: <span class="font-normal">
         <%=product.brand %>
       </span></p>
     <p class="mt-5 font-bold"> Cathegory: <span class="font-normal">
-        <%=product.category %>
+      <% product.categories.forEach(category=> { %> 
+        <%=category.category%>
+        <% }) %>
       </span></p>
 
 
@@ -143,7 +145,7 @@
       <tr>
         <td class="border pl-4 font-bold">Size</td>
         <td class="border pl-4">
-          <% sizes.forEach(size=> { %> 
+          <% product.productSizes.forEach(size=> { %> 
             <%=size.size%>
             <% }) %>
         </td>

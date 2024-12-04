@@ -1,17 +1,37 @@
 const db = require('../../library/models');
-const { searchProductsByField }  = require('../../library/search');
+const { searchProductsByField } = require('../../library/search');
 async function fetchProductById(productId) {
-  return await db.products.findByPk(productId);
-}
-async function fetchProductsByField({ field, value, excludeId, limit }) {
-  return await searchProductsByField({ field, value, excludeId, limit });
-}
-async function fetchProductSizes(productId) {
-  return await db.productSizes.findAll({
-    where: {
-      productId,
-    },
+  const product = await db.products.findByPk(productId, {
+    include: [
+      {
+        model: db.productImages,
+        attributes: ['image'],
+        where: { isMain: true },
+        required: false
+      },
+      {
+        model: db.productSizes,
+        attributes: ['size'],
+        where: { productId: productId },
+        required: false
+      },
+      {
+        model: db.categories,
+        attributes: ['category'],
+        where: { productId: productId },
+        required: false
+      }
+    ]
   });
+  console.log(product)
+  return product;
 }
 
-module.exports = { fetchProductById,fetchProductsByField, fetchProductSizes };
+
+
+async function fetchProductsByField({ productId, limit }) {
+  return await searchProductsByField({ productId, limit });
+}
+
+
+module.exports = { fetchProductById, fetchProductsByField };

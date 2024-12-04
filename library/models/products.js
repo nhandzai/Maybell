@@ -3,20 +3,22 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class products extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+   
     static associate(models) {
-      this.hasMany(models.productSizes, { foreignKey: 'productId', as: 'sizes' });
+
+    this.hasMany(models.productSizes, { foreignKey: 'productId', onDelete: 'CASCADE' });
+    this.hasMany(models.productImages, { foreignKey: 'productId', onDelete: 'CASCADE' });
+    this.hasMany(models.reviews, { foreignKey: 'productId', onDelete: 'CASCADE' });
+    this.hasMany(models.carts, { foreignKey: 'productId', onDelete: 'CASCADE' });
+    this.hasMany(models.wishlists, { foreignKey: 'productId', onDelete: 'CASCADE' });
+    this.hasMany(models.categories, { foreignKey: 'productId', onDelete: 'CASCADE' });
     }
   }
 
   products.init({
     name: DataTypes.STRING,
     price: DataTypes.FLOAT,
-    imageLink: DataTypes.STRING,
+
     shortDescription: DataTypes.TEXT,
     detail: DataTypes.TEXT,
     material: DataTypes.STRING,
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     stockQuantity: DataTypes.INTEGER,
     realPrice: DataTypes.FLOAT,
     brand: DataTypes.STRING,
-    category: DataTypes.STRING,
+
     promotion: {
       type: DataTypes.VIRTUAL,
       get() {
@@ -41,3 +43,5 @@ module.exports = (sequelize, DataTypes) => {
 
   return products;
 };
+
+

@@ -2,15 +2,13 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class productSizes extends Model {
+  class productImages extends Model {
     static associate(models) {
-
       this.belongsTo(models.products, { foreignKey: 'productId', onDelete: 'CASCADE' });
     }
   }
 
-  productSizes.init({
-    
+  productImages.init({
     productId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -20,15 +18,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: 'CASCADE',
     },
-    size: {
-      type: DataTypes.STRING,
-      allowNull: true,
+    image: DataTypes.STRING,
+    isMain: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   }, {
     sequelize,
-    modelName: 'productSizes',
+    modelName: 'productImages',
     timestamps: true,
   });
 
-  return productSizes;
+  return productImages;
 };
