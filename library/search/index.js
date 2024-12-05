@@ -6,15 +6,15 @@ async function searchProducts(query) {
   }
 
   const products = await db.products.findAll({
-  
-      include: [
-        {
-          model: db.productImages,
-          attributes: ['image'],
-          where: { isMain: true, id: db.sequelize.col('productImages.productId') }, 
-          required: false 
-        }
-      ],
+
+    include: [
+      {
+        model: db.productImages,
+        attributes: ['image'],
+        where: { isMain: true, id: db.sequelize.col('productImages.productId') },
+        required: false
+      }
+    ],
     where: {
       [db.Sequelize.Op.or]: [
         { name: { [db.Sequelize.Op.like]: `%${query}%` } },
@@ -26,140 +26,97 @@ async function searchProducts(query) {
   return products;
 }
 
-async function searchFilterProducts(minPrice, maxPrice, queries) {
+async function searchFilterProducts({ qfCategory, qfBrand, qfSize, minPrice, maxPrice }) {
+
+  const min = minPrice ? parseFloat(minPrice) : 0;
+  const max = maxPrice ? parseFloat(maxPrice) : 99999;
+  console.log("kha", min, max, qfCategory, qfBrand, qfSize);
+
+  const categoryIds = qfCategory ? (Array.isArray(qfCategory) ? qfCategory : qfCategory.split(',')) : [];
+  const brandIds = qfBrand ? (Array.isArray(qfBrand) ? qfBrand : qfBrand.split(',')) : [];
+  const sizeIds = qfSize ? (Array.isArray(qfSize) ? qfSize : qfSize.split(',')) : [];
 
   const whereClause = {};
-  const include = [];
-  if (minPrice != null && maxPrice != null) {
-    whereClause.realPrice = {
-      [db.Sequelize.Op.between]: [minPrice, maxPrice],
-    };
-  } else if (minPrice != null) {
-    whereClause.realPrice = {
-      [db.Sequelize.Op.gte]: minPrice,
-    };
-  } else if (maxPrice != null) {
-    whereClause.realPrice = {
-      [db.Sequelize.Op.lte]: maxPrice,
+
+  if (categoryIds.length > 0) {
+    whereClause.categoryId = {
+      [db.Sequelize.Op.in]: categoryIds,
     };
   }
 
-
-  if (queries && queries.length > 0) {
-    const categoryQueries = queries.filter(query =>
-      ['bedroom', 'sofa', 'matrass', 'outdoor', 'kitchen', 'living room'].includes(query)
-    );
-    const brandQueries = queries.filter(query =>
-      ['APEX', 'Cof', 'Puff B&G', 'Fornighte'].includes(query)
-    );
-    const sizeQueries = queries.filter(query =>
-      ['XS', 'S', 'M', 'L', 'XL'].includes(query)
-    );
-
-
-
-    if (brandQueries.length > 0) {
-      whereClause.brand = {
-        [db.Sequelize.Op.in]: brandQueries,
-      };
-    }
-    if (categoryQueries.length > 0) {
-      include.push({
-        model: db.categories,
-
-        where: {
-          category: {
-            [db.Sequelize.Op.in]: categoryQueries,
-          }
-        },
-        required: true,
-      });
-    }
-
-
-    if (sizeQueries.length > 0) {
-      include.push({
-        model: db.productSizes,
-
-        where: {
-          size: {
-            [db.Sequelize.Op.in]: sizeQueries,
-          }
-        },
-        required: true,
-      });
-    }
+  if (brandIds.length > 0) {
+    whereClause.brandId = {
+      [db.Sequelize.Op.in]: brandIds,
+    };
   }
-  include.push({
-    model: db.productImages,
 
+  if (minPrice || maxPrice) {
+    whereClause.realPrice = {
+      [db.Sequelize.Op.between]: [parseFloat(min), parseFloat(max)],
+    };
+  }
 
-    where: { isMain: true },
-    required: false,
-  })
-
-  const products = await db.products.findAll({
+  return await db.products.findAll({
     where: whereClause,
-    include: include,
-  });
-
-  return products;
-
-}
-async function searchProductsByField({ 
-  productId,
-  limit,
-}) {
- 
-
-const productCategories = await db.categories.findAll({
-  where: { productId },
-  attributes: ['category'], 
-});
-
-const categoryIds = productCategories.map(item => item.category);
-
-
-const queryOptions = {
-  where: {
-    id: {
-      [db.Sequelize.Op.ne]: productId, 
-    },
-  },
-  include: [
-    {
-      model: db.categories,
-      where: {
-        category: {
-          [db.Sequelize.Op.in]: categoryIds, 
-        },
+    include: [
+      {
+        model: db.categories,
+        required: true,
       },
-      required: true,
-    },
-    {
-      model: db.productImages,
-      attributes: ['image'],
-      where: { isMain: true },
-      required: false,
-    },
-  ],
-  limit: limit || 10, 
-};
-  queryOptions.include.push({
-    model: db.productImages,
-    attributes: ['image'],
-    where: { isMain: true },
-    required: false,
+      {
+        model: db.brands,
+        required: true,
+      },
+      {
+        model: db.sizes,
+        where: sizeIds.length > 0 ? { id: { [db.Sequelize.Op.in]: sizeIds } } : {},
+        through: {
+          attributes: [],
+        },
+        required: sizeIds.length > 0,
+      },
+      {
+        model: db.productImages,
+        where: { isMain: true },
+        required: false,
+      },
+    ],
   });
 
-  const relatedProducts = await db.products.findAll(queryOptions);
-
-  return relatedProducts;
 }
+async function searchProductsByField({ productId, limit }) {
+  try {
+   
+    const product = await db.products.findOne({
+      where: { id: productId },
+      attributes: ['categoryId'], 
+    });
 
+    if (!product) {
+      throw new Error('Product not found.');
+    }
 
+    const categoryId = product.categoryId;
 
+  
+    const similarProducts = await db.products.findAll({
+      where: { categoryId },
+      limit: limit || 10, 
+      include: [
+        {
+          model: db.productImages,
+          attributes: ['image'],
+          where: { isMain: true }, 
+          required: false,
+        },
+      ],
+    });
 
-
+    return similarProducts;
+  } catch (error) {
+    console.error('Error finding similar products:', error);
+    throw error;
+  }
+}
 
 module.exports = { searchProducts, searchFilterProducts, searchProductsByField };

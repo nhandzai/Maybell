@@ -3,18 +3,11 @@
   <ul class="flex items-center">
     <li class="cursor-pointer">
       <a href="/home">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
           <path
-            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z"
-          />
+            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
           <path
-            d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"
-          />
+            d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
         </svg>
       </a>
     </li>
@@ -26,101 +19,36 @@
 </nav>
 <!-- /breadcrumbs  -->
 
-<section
-  class="container mx-auto flex-grow max-w-[1200px] border-b py-5 lg:flex lg:flex-row lg:py-10"
->
+<section class="container mx-auto flex-grow max-w-[1200px] border-b py-5 lg:flex lg:flex-row lg:py-10">
   <!-- Sidebar toggle button on small screens -->
   <button id="sidebar-toggle" class="lg:hidden p-2 bg-gray-500 text-white">
     Filter
   </button>
 
   <!-- Sidebar -->
-  <section
-    id="sidebar"
-    class="hidden w-[300px] flex-shrink-0 px-4 lg:block"
-  >
+  <section id="sidebar" class="hidden w-[300px] flex-shrink-0 px-4 lg:block">
     <form id="catalog-form">
       <div class="flex border-b pb-5">
         <div class="w-full">
           <p class="mb-3 font-medium">CATEGORIES</p>
           <div class="w-full">
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="bedroom"
-                  onchange="updateQueryString()"
-                  id="bedroom"
-                />
-                <p class="ml-4">Bedroom</p>
+            
+            <% categories.forEach(category => { %> 
+              <div class="flex w-full justify-between">
+                <div class="flex justify-center items-center">
+                  <input 
+                    type="checkbox" 
+                    name="qfCategory" 
+                    value="<%= category.id %>" 
+                    onchange="updateQueryString()" 
+                    id="category:<%= category.id %>"
+                  />
+                  <p class="ml-4"><%= category.category %></p>
+                </div>
               </div>
-            </div>
+            <% }); %>
 
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="sofa"
-                  onchange="updateQueryString()"
-                  id="sofa"
-                />
-                <p class="ml-4">Sofa</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="matrass"
-                  onchange="updateQueryString()"
-                  id="matrass"
-                />
-                <p class="ml-4">Matrass</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="outdoor"
-                  onchange="updateQueryString()"
-                  id="outdoor"
-                />
-                <p class="ml-4">Outdoor</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="kitchen"
-                  onchange="updateQueryString()"
-                  id="kitchen"
-                />
-                <p class="ml-4">Kitchen</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="living room"
-                  onchange="updateQueryString()"
-                  id="living room"
-                />
-                <p class="ml-4">Living room</p>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -129,54 +57,19 @@
         <div class="w-full">
           <p class="mb-3 font-medium">BRANDS</p>
           <div class="w-full">
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="APEX"
-                  onchange="updateQueryString()"
-                  id="APEX"
-                />
-                <p class="ml-4">APEX</p>
+
+            <% brands.forEach(brand=> { %>
+              <div class="flex w-full justify-between">
+                <div class="flex justify-center items-center">
+                  <input type="checkbox" name="qfBrand" value="<%= brand.id %>" onchange="updateQueryString()"
+                    id="brand:<%= brand.id %>" />
+                  <p class="ml-4">
+                    <%= brand.brand %>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Cof"
-                  onchange="updateQueryString()"
-                  id="Cof"
-                />
-                <p class="ml-4">Cof</p>
-              </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Puff B&G"
-                  onchange="updateQueryString()"
-                  id="Puff B&G"
-                />
-                <p class="ml-4">Puff B&G</p>
-              </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Fornighte"
-                  onchange="updateQueryString()"
-                  id="Fornighte"
-                />
-                <p class="ml-4">Fornighte</p>
-              </div>
-            </div>
+              <% }); %>
+
           </div>
         </div>
       </div>
@@ -185,134 +78,48 @@
           <p class="mb-3 font-medium">PRICE</p>
           <div class="flex w-full">
             <div class="flex justify-between">
-              <input
-                id="price-min"
-                name="minPrice"
-                type="number"
-                min="0"
-                class="h-8 w-[90px] border pl-2"
-                placeholder="0"
-              />
+              <input id="price-min" name="minPrice" type="number" min="0" class="h-8 w-[90px] border pl-2"
+                placeholder="0" />
               <span class="px-3">-</span>
-              <input
-                id="price-max"
-                name="maxPrice"
-                type="number"
-                max="999999"
-                min="1"
-                class="h-8 w-[90px] border pl-2"
-                placeholder="99999"
-              />
+              <input id="price-max" name="maxPrice" type="number" max="999999" min="1" class="h-8 w-[90px] border pl-2"
+                placeholder="99999" />
             </div>
           </div>
-      
+
           <!-- Submit Button Inside PRICE Section -->
           <div class="mt-4 flex justify-start">
-            <button
-              type="submit"
-              class="ju bg-amber-400 text-black px-6 py-2 hover:bg-yellow-300 transition duration-200"
-            >
+            <button type="submit"
+              class="ju bg-amber-400 text-black px-6 py-2 hover:bg-yellow-300 transition duration-200">
               Aplly
             </button>
           </div>
         </div>
       </div>
-      
+
 
       <div class="flex border-b py-5">
         <div class="w-full">
           <p class="mb-3 font-medium">SIZE</p>
           <div class="flex gap-2">
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="XS"
-                name="qf"
-                value="XS"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="XS"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                XS
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="S"
-                name="qf"
-                value="S"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="S"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                S
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="M"
-                name="qf"
-                value="M"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="M"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                M
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="L"
-                name="qf"
-                value="L"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="L"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                L
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="XL"
-                name="qf"
-                value="XL"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="XL"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                XL
-              </label>
-            </div>
+            <% sizes.forEach(size => { %>
+              <div class="flex h-8 w-8 items-center justify-center border duration-100">
+                <input 
+                  type="checkbox" 
+                  id="size:<%= size.id %>" 
+                  name="qfSize" 
+                  value="<%= size.id %>" 
+                  onchange="updateQueryString()" 
+                  class="hidden peer" 
+                />
+                <label 
+                  for="size:<%= size.size %>"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
+                >
+                  <%= size.size %>
+                </label>
+              </div>
+            <% }); %>
+            
           </div>
         </div>
       </div>
@@ -323,9 +130,7 @@
   <div>
     <!-- sort button used to be here -->
 
-    <section
-      class="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-5 pb-10 lg:grid-cols-2"
-    >
+    <section class="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-5 pb-10 lg:grid-cols-2">
       <%- include('product-home', { products: products }) %>
     </section>
   </div>
@@ -338,10 +143,8 @@
   toggleButton.addEventListener("click", () => {
     sidebar.classList.toggle("hidden");
   });
-  document.getElementById("catalog-form").addEventListener("submit", function(event) {
-    event.preventDefault(); 
-  
-    
+  document.getElementById("catalog-form").addEventListener("submit", function (event) {
+    event.preventDefault();
     updateQueryString();
   });
 
@@ -350,39 +153,34 @@
     const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
     const queryParams = [];
     const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("q"); 
-  
-    // Check if searchQuery exists, otherwise set a default or handle it
+    const searchQuery = urlParams.get("q");
     if (searchQuery) {
       queryParams.push(`q=${encodeURIComponent(searchQuery)}`);
-    } 
-    
-  
+    }
     checkboxes.forEach((checkbox) => {
       const paramName = checkbox.name;
       queryParams.push(`${paramName}=${encodeURIComponent(checkbox.value)}`);
     });
   
-    const minPrice = document.getElementById("price-min").value ;
-    const maxPrice = document.getElementById("price-max").value ;
+    const minPrice = document.getElementById("price-min").value;
+    const maxPrice = document.getElementById("price-max").value;
   
     queryParams.push(`minPrice=${minPrice ? encodeURIComponent(minPrice) : ""}`);
     queryParams.push(`maxPrice=${maxPrice ? encodeURIComponent(maxPrice) : ""}`);
   
-    // Construct the final query string and update the URL
+   
     if (queryParams.length > 0) {
-      
       window.location.search = queryParams.join("&");
-    } else {  
-    
+    } else {
       window.location.search = "";
     }
   }
+  
 
   function preserveCheckboxState() {
     const urlParams = new URLSearchParams(window.location.search);
   
-    // Preserve 'q' parameter for the search query
+
     const searchQuery = urlParams.get("q");
     if (searchQuery) {
       const searchInput = document.querySelector('input[name="q"]');
@@ -390,17 +188,33 @@
         searchInput.value = searchQuery;
       }
     }
-  
-    // Preserve checked state for 'qf' filters
-    const checkedFilters = urlParams.getAll("qf");
-    checkedFilters.forEach((filter) => {
-      const checkbox = document.getElementById(filter);
+ 
+    const categoryFilters = urlParams.getAll("qfCategory");
+    categoryFilters.forEach((category) => {
+      const checkbox = document.getElementById(`category:${category}`);
       if (checkbox) {
         checkbox.checked = true;
       }
     });
-  
-    // Preserve price range values
+
+    const brandFilters = urlParams.getAll("qfBrand");
+    brandFilters.forEach((brand) => {
+      const checkbox = document.getElementById(`brand:${brand}`);
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
+
+    const sizeFilters = urlParams.getAll("qfSize");
+    sizeFilters.forEach((size) => {
+      const checkbox = document.getElementById(`size:${size}`);
+      console.log(checkbox);
+      console.log(`size:${size.size}`);
+      if (checkbox) {
+        checkbox.checked = true;
+      }
+    });
+
     const minPrice = urlParams.get("minPrice");
     const maxPrice = urlParams.get("maxPrice");
   
@@ -412,7 +226,6 @@
     }
   }
   
-
   window.onload = preserveCheckboxState;
 
 

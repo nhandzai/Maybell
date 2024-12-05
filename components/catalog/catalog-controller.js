@@ -1,45 +1,36 @@
-const { fetchAllProducts, fetchProducts, fetchFilterProducts } = require('./catalog-model');
+const { fetchAllProducts, fetchFilterProducts, fetchAllCategories, fetchAllBrands, fetchAllSizes } = require('./catalog-model');
 const { renderCatalogPage } = require('./catalog-view');
-
+const db = require('../../library/models');
 async function getCatalog(req, res, next) {
   try {
+   
     let products = await fetchAllProducts();
-    if ( req.query.qf || req.query.minPrice || req.query.maxPrice){
-      console.log(req.query.qf, req.query.minPrice, req.query.maxPrice);
+    const categories = await fetchAllCategories();
+    const brands = await fetchAllBrands();
+    const sizes = await fetchAllSizes();
+
+   
+    if (req.query.qfCategory || req.query.minPrice || req.query.maxPrice || req.query.qfBrand || req.query.qfSize) {
       products = await getFilterProducts(req, res);
     }
-  
-  
-    renderCatalogPage(res, products);
+
+    renderCatalogPage(res, products, categories, brands, sizes);
   } catch (error) {
     next(error);
   }
 }
 
-
-
 async function getFilterProducts(req, res) {
   try {
-    const queries = req.query.qf || [];
+    const queryParams = req.query;
 
-    let minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : 0;
-    let maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : 99999;
+    const products = await fetchFilterProducts(queryParams);
 
-    if (isNaN(minPrice)) {
-      minPrice = 0;
-    }
-    if (isNaN(maxPrice)) {
-      maxPrice = 99999;
-    }
-    const queryArray = Array.isArray(queries) ? queries : [queries];
-
-    const products = await fetchFilterProducts(minPrice, maxPrice, queryArray);
     return products;
   } catch (error) {
     throw error;
   }
 }
-
 
 
 module.exports = { getCatalog, getFilterProducts };

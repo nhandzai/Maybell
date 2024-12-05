@@ -69,9 +69,8 @@
         <%=product.brand %>
       </span></p>
     <p class="mt-5 font-bold"> Cathegory: <span class="font-normal">
-      <% product.categories.forEach(category=> { %> 
-        <%=category.category%>
-        <% }) %>
+      <%=product.category %>
+      
       </span></p>
 
 
@@ -145,7 +144,7 @@
       <tr>
         <td class="border pl-4 font-bold">Size</td>
         <td class="border pl-4">
-          <% product.productSizes.forEach(size=> { %> 
+          <% product.sizes.forEach(size=> { %> 
             <%=size.size%>
             <% }) %>
         </td>

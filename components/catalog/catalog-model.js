@@ -14,6 +14,18 @@ async function fetchAllProducts() {
   });
   return products;
 }
+async function fetchAllCategories() {
+  const categories = await db.categories.findAll();
+  return categories;
+}
+async function fetchAllBrands() {
+  const brands = await db.brands.findAll();
+  return brands;
+}
+async function fetchAllSizes() {
+  const sizes = await db.sizes.findAll();
+  return sizes;
+}
 
 async function fetchProducts(query) {
   if (!query) {
@@ -23,10 +35,11 @@ async function fetchProducts(query) {
   return products;
 }
 
-async function fetchFilterProducts(minPrice, maxPrice, queries) {
+async function fetchFilterProducts(queryParams) {
+  
 
-  const products = await searchFilterProducts(minPrice, maxPrice, queries);
+  const products = await searchFilterProducts(queryParams);
   return products;
 }
 
-module.exports = { fetchAllProducts, fetchProducts, fetchFilterProducts };
+module.exports = { fetchAllProducts, fetchProducts, fetchFilterProducts, fetchAllCategories, fetchAllBrands, fetchAllSizes };

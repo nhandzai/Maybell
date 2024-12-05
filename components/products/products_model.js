@@ -10,15 +10,20 @@ async function fetchProductById(productId) {
         required: false
       },
       {
-        model: db.productSizes,
-        attributes: ['size'],
-        where: { productId: productId },
-        required: false
+        model: db.sizes,
+        through: { attributes: [] }, 
+        attributes: [ 'size'],  
       },
       {
         model: db.categories,
         attributes: ['category'],
-        where: { productId: productId },
+        where: { id: db.Sequelize.col('products.categoryId')},
+        required: false
+      },
+      {
+        model: db.brands,
+        attributes: ['brand'],
+        where: { id:  db.Sequelize.col('products.categoryId') },
         required: false
       }
     ]

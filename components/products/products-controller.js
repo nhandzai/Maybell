@@ -13,7 +13,7 @@ async function getProduct(req, res, next) {
       limit: 4,
 
     });
-    console.log("aaa",relatedProducts)
+
     renderProductPage(res, product, relatedProducts);
   } catch (error) {
     next(error);
