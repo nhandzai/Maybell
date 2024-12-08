@@ -9,7 +9,7 @@ async function getCatalog(req, res, next) {
     const categories = await fetchAllCategories();
     const brands = await fetchAllBrands();
     const sizes = await fetchAllSizes();
-    const limit = 1;
+    const limit = 4;
     const page = req.query.page || 1;
     const products = await fetchAllProducts(limit,page);
     const pageCount = Math.ceil(await db.products.count() / limit);
@@ -24,7 +24,7 @@ async function filterProduct(req, res, next) {
  
   try {
     const page= req.query.page || 1;
-    const limit = 1;
+    const limit = 4;
 
     const queryParams = req.query;
 
@@ -39,18 +39,4 @@ async function filterProduct(req, res, next) {
   }
 }
 
-/*async function getFilterProducts(req, res) {
-  try {
-    const queryParams = req.query;
-
-    const products = await fetchFilterProducts(queryParams);
-
-    return products;
-  } catch (error) {
-    throw error;
-  }
-}
-  */
-
-
-module.exports = { getCatalog,filterProduct};//,getFilterProducts };
+module.exports = { getCatalog,filterProduct};
