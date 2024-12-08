@@ -1,8 +1,10 @@
 const db = require('../../library/models');
 const { searchProducts, searchFilterProducts } = require('../../library/search');
 
-async function fetchAllProducts() {
+async function fetchAllProducts(limit,page) {
   const products = await db.products.findAll({
+    limit: limit,
+    offset: (page - 1) * limit,
     include: [
       {
         model: db.productImages,

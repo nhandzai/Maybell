@@ -16,11 +16,11 @@ async function fetchAllSizes() {
   const sizes = await db.sizes.findAll();
   return sizes;
 }
-async function fetchProducts(query) {
+async function fetchProducts(query,limit,page) {
   if (!query) {
     throw new Error('Search query is required.');
   }
-  const products = await searchProducts(query); 
+  const products = await searchProducts(query,limit,page); 
   return products;
 }
 
