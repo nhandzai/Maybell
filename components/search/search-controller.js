@@ -7,7 +7,7 @@ async function getSearch(req, res, next) {
     if (!req.query.q) {
       return res.redirect('/catalog');
     }
-    const limit = 1;
+    const limit = 4;
     const page = req.query.page || 1;
     const categories = await fetchAllCategories();
     const brands = await fetchAllBrands();
@@ -26,7 +26,7 @@ async function getSearch(req, res, next) {
 async function getFilterProducts(req, res, allProducts) {
   try {
     const page= req.query.page || 1;
-    const limit = 1;
+    const limit = 4;
     const queryParams = req.query;
 
     const filteredProducts = await fetchFilterProducts(queryParams);
