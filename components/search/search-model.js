@@ -1,5 +1,5 @@
 const db = require('../../library/models');
-const { searchProducts, searchFilterProducts } = require('../../library/search');
+const { searchProducts } = require('../../library/search');
 
 async function fetchAllProducts() {
   return await db.products.findAll();
@@ -24,9 +24,6 @@ async function fetchProducts(query,limit,page) {
   return products;
 }
 
-async function fetchFilterProducts(queryParams) {
-  const products = await searchFilterProducts(queryParams);
-  return products;
-}
 
-module.exports = { fetchAllProducts, fetchProducts, fetchFilterProducts ,fetchAllCategories, fetchAllBrands, fetchAllSizes};
+
+module.exports = { fetchAllProducts, fetchProducts ,fetchAllCategories, fetchAllBrands, fetchAllSizes};

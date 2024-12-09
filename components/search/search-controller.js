@@ -13,32 +13,18 @@ async function getSearch(req, res, next) {
     const brands = await fetchAllBrands();
     const sizes = await fetchAllSizes();
     const query = req.query.q;
-    const pageCount = Math.ceil(await db.products.count() / limit);
-    let products = await fetchProducts(query,limit,page);
+   
+    let products = await fetchProducts(query);
+    const LProduct = products.slice((page - 1) * limit, page * limit);
+
+    const pageCount = Math.ceil(products.length/ limit);
     
-    renderSearchPage(res, products, categories, brands, sizes, pageCount);
+    renderSearchPage(res, LProduct, categories, brands, sizes, pageCount);
   } catch (error) {
     next(error);
   }
 }
 
 
-async function getFilterProducts(req, res, allProducts) {
-  try {
-    const page= req.query.page || 1;
-    const limit = 4;
-    const queryParams = req.query;
 
-    const filteredProducts = await fetchFilterProducts(queryParams);
-    
-    const filteredAndSearchedProducts = allProducts.filter(product =>
-      filteredProducts.some(filteredProduct => filteredProduct.id === product.id)
-    );
-    const LProduct = filteredAndSearchedProducts.slice((page - 1) * limit, page * limit);
-
-    res.json({ products: LProduct, pageCount: page, totalPage: Math.ceil(filteredAndSearchedProducts.length / limit) });
-  } catch (error) {
-    throw error;
-  }
-}
-module.exports = { getSearch, getFilterProducts };
+module.exports = { getSearch };

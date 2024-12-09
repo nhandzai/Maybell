@@ -1,13 +1,12 @@
 const db = require('../models');
 
-async function searchProducts(query,limit,page) {
+async function searchProducts(query) {
   if (!query) {
     throw new Error('Search query is required.');
   }
 
   const products = await db.products.findAll({
-    limit: limit,
-    offset: (page - 1) * limit,
+ 
 
     include: [
       {
@@ -28,17 +27,24 @@ async function searchProducts(query,limit,page) {
   return products;
 }
 
-async function searchFilterProducts({ qfCategory, qfBrand, qfSize, minPrice, maxPrice,page }) {
+async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice,page }) {
   const limit =1;
   const min = minPrice ? parseFloat(minPrice) : 0;
   const max = maxPrice ? parseFloat(maxPrice) : 99999;
 
-
+ 
   const categoryIds = qfCategory ? (Array.isArray(qfCategory) ? qfCategory : qfCategory.split(',')) : [];
   const brandIds = qfBrand ? (Array.isArray(qfBrand) ? qfBrand : qfBrand.split(',')) : [];
   const sizeIds = qfSize ? (Array.isArray(qfSize) ? qfSize : qfSize.split(',')) : [];
 
   const whereClause = {};
+  if(q)
+  {
+    whereClause[db.Sequelize.Op.or] = [
+      { name: { [db.Sequelize.Op.like]: `%${q}%` } },
+      { shortDescription: { [db.Sequelize.Op.like]: `%${q}%` } }
+    ];
+  }
 
   if (categoryIds.length > 0) {
     whereClause.categoryId = {

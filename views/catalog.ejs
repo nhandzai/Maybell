@@ -306,7 +306,7 @@
 
             for (let i = 1; i <= totalPage; i++) {
               const button = document.createElement("button");
-              button.className = `px-4 py-2 border rounded transition-colors page-btn ${i === parseInt(pageNumber) ? 'bg-blue-500 text-white' : ''}`;
+              button.className = `px-4 py-2 border rounded transition-colors page-btn ${i === parseInt(pageCount) ? 'bg-blue-500 text-white' : ''}`;
               button.value = i;
               button.textContent = i;
               button.onclick = updatePage;
