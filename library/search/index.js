@@ -27,8 +27,8 @@ async function searchProducts(query) {
   return products;
 }
 
-async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice,page }) {
-  const limit =1;
+async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice }) {
+  
   const min = minPrice ? parseFloat(minPrice) : 0;
   const max = maxPrice ? parseFloat(maxPrice) : 99999;
 
@@ -91,8 +91,12 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
         where: { isMain: true },
         required: false,
       },
+      
     ],
+    order: [['id', 'ASC']],
+
   });
+  console.log("test2",products)
   return products;
 
 }
