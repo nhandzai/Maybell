@@ -87,7 +87,7 @@
           <div class="mt-4 flex justify-start">
             <button type="submit"
               class="ju bg-amber-400 text-black px-6 py-2 hover:bg-yellow-300 transition duration-200">
-              Aplly
+              Apply
             </button>
           </div>
         </div>
@@ -102,7 +102,7 @@
               <div class="flex h-8 w-8 items-center justify-center border duration-100">
                 <input type="checkbox" id="size:<%= size.id %>" name="qfSize" value="<%= size.id %>"
                   onchange="updateQueryString()" class="hidden peer" />
-                <label for="size:<%= size.size %>"
+                <label for="size:<%= size.id %>"
                   class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white">
                   <%= size.size %>
                 </label>
@@ -193,7 +193,6 @@
 
       document.getElementById("catalog-form").addEventListener("submit", function (event) {
         event.preventDefault();
-
         updateQueryString();
       });
 
@@ -324,27 +323,52 @@
 
       function preserveCheckboxState() {
         const urlParams = new URLSearchParams(window.location.search);
-
-        // Preserve search query
+      
+    
         const searchQuery = urlParams.get("q");
         if (searchQuery) {
-          document.querySelector('input[name="q"]').value = searchQuery;
+          const searchInput = document.querySelector('input[name="q"]');
+          if (searchInput) {
+            searchInput.value = searchQuery;
+          }
         }
-
-        // Preserve checkbox states
-        const checkedFilters = urlParams.getAll("qf");
-        checkedFilters.forEach((filter) => {
-          const checkbox = document.getElementById(filter);
+     
+        const categoryFilters = urlParams.getAll("qfCategory");
+        categoryFilters.forEach((category) => {
+          const checkbox = document.getElementById(`category:${category}`);
           if (checkbox) {
             checkbox.checked = true;
           }
         });
-
-        // Preserve price range
+    
+        const brandFilters = urlParams.getAll("qfBrand");
+        brandFilters.forEach((brand) => {
+          const checkbox = document.getElementById(`brand:${brand}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
+        const sizeFilters = urlParams.getAll("qfSize");
+        sizeFilters.forEach((size) => {
+          const checkbox = document.getElementById(`size:${size}`);
+          console.log(checkbox);
+          console.log(`size:${size.size}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
         const minPrice = urlParams.get("minPrice");
         const maxPrice = urlParams.get("maxPrice");
-        if (minPrice) document.getElementById("price-min").value = minPrice;
-        if (maxPrice) document.getElementById("price-max").value = maxPrice;
+      
+        if (minPrice) {
+          document.getElementById("price-min").value = minPrice;
+        }
+        if (maxPrice) {
+          document.getElementById("price-max").value = maxPrice;
+        }
       }
+    
 
     </script>
