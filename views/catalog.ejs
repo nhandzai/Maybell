@@ -3,18 +3,11 @@
   <ul class="flex items-center">
     <li class="cursor-pointer">
       <a href="/home">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-5 w-5"
-        >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
           <path
-            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z"
-          />
+            d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
           <path
-            d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z"
-          />
+            d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
         </svg>
       </a>
     </li>
@@ -26,101 +19,33 @@
 </nav>
 <!-- /breadcrumbs  -->
 
-<section
-  class="container mx-auto flex-grow max-w-[1200px] border-b py-5 lg:flex lg:flex-row lg:py-10"
->
+<section class="container mx-auto flex-grow max-w-[1200px] border-b py-5 lg:flex lg:flex-row lg:py-10">
   <!-- Sidebar toggle button on small screens -->
   <button id="sidebar-toggle" class="lg:hidden p-2 bg-gray-500 text-white">
     Filter
   </button>
 
   <!-- Sidebar -->
-  <section
-    id="sidebar"
-    class="hidden w-[300px] flex-shrink-0 px-4 lg:block"
-  >
+  <section id="sidebar" class="hidden w-[300px] flex-shrink-0 px-4 lg:block">
     <form id="catalog-form">
       <div class="flex border-b pb-5">
         <div class="w-full">
           <p class="mb-3 font-medium">CATEGORIES</p>
           <div class="w-full">
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="bedroom"
-                  onchange="updateQueryString()"
-                  id="bedroom"
-                />
-                <p class="ml-4">Bedroom</p>
-              </div>
-            </div>
 
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="sofa"
-                  onchange="updateQueryString()"
-                  id="sofa"
-                />
-                <p class="ml-4">Sofa</p>
+            <% categories.forEach(category=> { %>
+              <div class="flex w-full justify-between">
+                <div class="flex justify-center items-center">
+                  <input type="checkbox" name="qfCategory" value="<%= category.id %>" onchange="updateQueryString()"
+                    id="category:<%= category.id %>" />
+                  <p class="ml-4">
+                    <%= category.category %>
+                  </p>
+                </div>
               </div>
-            </div>
+              <% }); %>
 
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="matrass"
-                  onchange="updateQueryString()"
-                  id="matrass"
-                />
-                <p class="ml-4">Matrass</p>
-              </div>
-            </div>
 
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="outdoor"
-                  onchange="updateQueryString()"
-                  id="outdoor"
-                />
-                <p class="ml-4">Outdoor</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="kitchen"
-                  onchange="updateQueryString()"
-                  id="kitchen"
-                />
-                <p class="ml-4">Kitchen</p>
-              </div>
-            </div>
-
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="living room"
-                  onchange="updateQueryString()"
-                  id="living room"
-                />
-                <p class="ml-4">Living room</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -129,54 +54,19 @@
         <div class="w-full">
           <p class="mb-3 font-medium">BRANDS</p>
           <div class="w-full">
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="APEX"
-                  onchange="updateQueryString()"
-                  id="APEX"
-                />
-                <p class="ml-4">APEX</p>
+
+            <% brands.forEach(brand=> { %>
+              <div class="flex w-full justify-between">
+                <div class="flex justify-center items-center">
+                  <input type="checkbox" name="qfBrand" value="<%= brand.id %>" onchange="updateQueryString()"
+                    id="brand:<%= brand.id %>" />
+                  <p class="ml-4">
+                    <%= brand.brand %>
+                  </p>
+                </div>
               </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Cof"
-                  onchange="updateQueryString()"
-                  id="Cof"
-                />
-                <p class="ml-4">Cof</p>
-              </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Puff B&G"
-                  onchange="updateQueryString()"
-                  id="Puff B&G"
-                />
-                <p class="ml-4">Puff B&G</p>
-              </div>
-            </div>
-            <div class="flex w-full justify-between">
-              <div class="flex justify-center items-center">
-                <input
-                  type="checkbox"
-                  name="qf"
-                  value="Fornighte"
-                  onchange="updateQueryString()"
-                  id="Fornighte"
-                />
-                <p class="ml-4">Fornighte</p>
-              </div>
-            </div>
+              <% }); %>
+
           </div>
         </div>
       </div>
@@ -185,134 +75,40 @@
           <p class="mb-3 font-medium">PRICE</p>
           <div class="flex w-full">
             <div class="flex justify-between">
-              <input
-                id="price-min"
-                name="minPrice"
-                type="number"
-                min="0"
-                class="h-8 w-[90px] border pl-2"
-                placeholder="0"
-              />
+              <input id="price-min" name="minPrice" type="number" min="0" class="h-8 w-[90px] border pl-2"
+                placeholder="0" />
               <span class="px-3">-</span>
-              <input
-                id="price-max"
-                name="maxPrice"
-                type="number"
-                max="999999"
-                min="1"
-                class="h-8 w-[90px] border pl-2"
-                placeholder="99999"
-              />
+              <input id="price-max" name="maxPrice" type="number" max="999999" min="1" class="h-8 w-[90px] border pl-2"
+                placeholder="99999" />
             </div>
           </div>
-      
+
           <!-- Submit Button Inside PRICE Section -->
           <div class="mt-4 flex justify-start">
-            <button
-              type="submit"
-              class="ju bg-amber-400 text-black px-6 py-2 hover:bg-yellow-300 transition duration-200"
-            >
-              Aplly
+            <button type="submit"
+              class="ju bg-amber-400 text-black px-6 py-2 hover:bg-yellow-300 transition duration-200">
+              Apply
             </button>
           </div>
         </div>
       </div>
-      
+
 
       <div class="flex border-b py-5">
         <div class="w-full">
           <p class="mb-3 font-medium">SIZE</p>
           <div class="flex gap-2">
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="XS"
-                name="qf"
-                value="XS"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="XS"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                XS
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="S"
-                name="qf"
-                value="S"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="S"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                S
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="M"
-                name="qf"
-                value="M"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="M"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                M
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="L"
-                name="qf"
-                value="L"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="L"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                L
-              </label>
-            </div>
-            <div
-              class="flex h-8 w-8 items-center justify-center border duration-100"
-            >
-              <input
-                type="checkbox"
-                id="XL"
-                name="qf"
-                value="XL"
-                onchange="updateQueryString()"
-                class="hidden peer"
-              />
-              <label
-                for="XL"
-                class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white"
-              >
-                XL
-              </label>
-            </div>
+            <% sizes.forEach(size=> { %>
+              <div class="flex h-8 w-8 items-center justify-center border duration-100">
+                <input type="checkbox" id="size:<%= size.id %>" name="qfSize" value="<%= size.id %>"
+                  onchange="updateQueryString()" class="hidden peer" />
+                <label for="size:<%= size.id %>"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center border peer-checked:bg-green-500 peer-checked:text-white">
+                  <%= size.size %>
+                </label>
+              </div>
+              <% }); %>
+
           </div>
         </div>
       </div>
@@ -323,97 +119,256 @@
   <div>
     <!-- sort button used to be here -->
 
-    <section
-      class="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-5 pb-10 lg:grid-cols-2"
-    >
-      <%- include('product-home', { products: products }) %>
+    <section id="product" class="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-5 pb-10 lg:grid-cols-2">
+      <% products.forEach(product=> { %>
+        <div class="flex flex-wrap">
+          <div class="flex flex-col">
+            <div class="relative flex">
+              <img src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
+
+              <div
+                class="absolute flex h-full w-full items-center justify-center gap-3 opacity-0 duration-150 hover:opacity-100">
+                <a href="/product?id=<%= product.id %>"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="h-4 w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </a>
+                <span class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                    <path
+                      d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                  </svg>
+                </span>
+              </div>
+
+              <div class="absolute right-1 mt-3 flex items-center justify-center bg-amber-400">
+                <p class="px-2 py-2 text-sm">&minus; <%= product.promotion %>&percnt; OFF</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="mt-2">
+                <%= product.name %>
+              </p>
+              <p class="font-medium text-violet-900">
+                $<%= product.realPrice %>
+                  <span class="text-sm text-gray-500 line-through">
+                    $<%= product.price %>
+                  </span>
+              </p>
+              <div>
+                <button class="my-5 h-10 w-full bg-violet-900 text-white">
+                  Add to cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
     </section>
-  </div>
-</section>
 
-<script>
-  const toggleButton = document.getElementById("sidebar-toggle");
-  const sidebar = document.getElementById("sidebar");
+    <div id="pagination" class="flex justify-center my-5 gap-2">
+      <div id="page" class="flex gap-2 ml-4">
+        <% for (let i=1; i <=pageCount; i++) { %>
+          <button
+            class="px-4 py-2 border rounded transition-colors page-btn <%= (i === 1) ? 'bg-blue-500 text-white' : '' %>"
+            value="<%= i %>" onclick="updatePage(event)">
+            <%= i %>
+          </button>
+          <% } %>
+      </div>
+    </div>
+    <script>
+      const toggleButton = document.getElementById("sidebar-toggle");
+      const sidebar = document.getElementById("sidebar");
 
-  toggleButton.addEventListener("click", () => {
-    sidebar.classList.toggle("hidden");
-  });
-  document.getElementById("catalog-form").addEventListener("submit", function(event) {
-    event.preventDefault(); 
-  
-    
-    updateQueryString();
-  });
+      let isClickNum = false;
 
-  function updateQueryString() {
-    const form = document.getElementById("catalog-form");
-    const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-    const queryParams = [];
-    const urlParams = new URLSearchParams(window.location.search);
-    const searchQuery = urlParams.get("q"); 
-  
-    // Check if searchQuery exists, otherwise set a default or handle it
-    if (searchQuery) {
-      queryParams.push(`q=${encodeURIComponent(searchQuery)}`);
-    } 
-    
-  
-    checkboxes.forEach((checkbox) => {
-      const paramName = checkbox.name;
-      queryParams.push(`${paramName}=${encodeURIComponent(checkbox.value)}`);
-    });
-  
-    const minPrice = document.getElementById("price-min").value ;
-    const maxPrice = document.getElementById("price-max").value ;
-  
-    queryParams.push(`minPrice=${minPrice ? encodeURIComponent(minPrice) : ""}`);
-    queryParams.push(`maxPrice=${maxPrice ? encodeURIComponent(maxPrice) : ""}`);
-  
-    // Construct the final query string and update the URL
-    if (queryParams.length > 0) {
+      toggleButton.addEventListener("click", () => {
+        sidebar.classList.toggle("hidden");
+      });
+
+      document.getElementById("catalog-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        updateQueryString();
+      });
+
+      function updatePage(event) {
+        const pageNumber = event.target.value;
+        const urlParams = new URLSearchParams(window.location.search);
+        isClickNum = true;
+        urlParams.set("page", pageNumber);
+
+
+
+        window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
       
-      window.location.search = queryParams.join("&");
-    } else {  
+        updateQueryString();
+      }
+
+      function updateQueryString() {
+        const form = document.getElementById("catalog-form");
+        const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
+        const queryParams = [];
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get("q");
+
+        if (searchQuery) {
+          queryParams.push(`q=${encodeURIComponent(searchQuery)}`);
+        }
+
+        checkboxes.forEach((checkbox) => {
+          const paramName = checkbox.name;
+          queryParams.push(`${paramName}=${encodeURIComponent(checkbox.value)}`);
+        });
+
+        const minPrice = document.getElementById("price-min").value;
+        const maxPrice = document.getElementById("price-max").value;
+
+        queryParams.push(`minPrice=${minPrice ? encodeURIComponent(minPrice) : ""}`);
+        queryParams.push(`maxPrice=${maxPrice ? encodeURIComponent(maxPrice) : ""}`);
+
+        // Preserve the page number
+        const pageNumber = urlParams.get("page");
+        console.log(isClickNum);
+        if(isClickNum === true){
+          queryParams.push(`page=${pageNumber}`);
+          isClickNum = false;
+        } else {
+          queryParams.push(`page=1`);
+        
+        }
+        window.history.pushState({}, "", `${window.location.pathname}?${queryParams.join("&")}`);
     
-      window.location.search = "";
-    }
-  }
 
-  function preserveCheckboxState() {
-    const urlParams = new URLSearchParams(window.location.search);
-  
-    // Preserve 'q' parameter for the search query
-    const searchQuery = urlParams.get("q");
-    if (searchQuery) {
-      const searchInput = document.querySelector('input[name="q"]');
-      if (searchInput) {
-        searchInput.value = searchQuery;
+        fetch(`/api/products?${queryParams.join("&")}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const products = data.products;
+            const pageCount = data.pageCount;
+            const totalPage = data.totalPage;
+           
+            const productContainer = document.getElementById("product");
+
+            productContainer.innerHTML = "";
+
+            products.forEach((product) => {
+              const productElement = document.createElement("div");
+              productElement.classList.add("product-item");
+              productElement.innerHTML = `
+                <div class="flex flex-wrap">
+                  <div class="flex flex-col">
+                    <div class="relative flex">
+                      <img id="imageProduct" src="${product.productImages[0].image}" alt="${product.name} image" />
+                      <div class="absolute flex h-full w-full items-center justify-center gap-3 opacity-0 duration-150 hover:opacity-100">
+                        <a id="idProduct" href="/product?id=${product.id}" class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                          </svg>
+                        </a>
+                        <span class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4">
+                            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="absolute right-1 mt-3 flex items-center justify-center bg-amber-400">
+                        <p id="promotionProduct" class="px-2 py-2 text-sm">-${product.promotion}% OFF</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p id="nameProduct" class="mt-2">${product.name}</p>
+                      <p class="font-medium text-violet-900">
+                        $${product.realPrice} <span id="priceProduct" class="text-sm text-gray-500 line-through">$${product.price}</span>
+                      </p>
+                      <div>
+                        <button class="my-5 h-10 w-full bg-violet-900 text-white">Add to cart</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+              productContainer.appendChild(productElement);
+            });
+
+          
+            const paginationContainer = document.getElementById("page");
+            paginationContainer.innerHTML = ""; 
+
+            for (let i = 1; i <= totalPage; i++) {
+              const button = document.createElement("button");
+              button.className = `px-4 py-2 border rounded transition-colors page-btn ${i === parseInt(pageCount) ? 'bg-blue-500 text-white' : ''}`;
+              button.value = i;
+              button.textContent = i;
+              button.onclick = updatePage;
+              paginationContainer.appendChild(button);
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
       }
-    }
-  
-    // Preserve checked state for 'qf' filters
-    const checkedFilters = urlParams.getAll("qf");
-    checkedFilters.forEach((filter) => {
-      const checkbox = document.getElementById(filter);
-      if (checkbox) {
-        checkbox.checked = true;
+
+      window.onload = function () {
+        preserveCheckboxState();
+      };
+
+      function preserveCheckboxState() {
+        const urlParams = new URLSearchParams(window.location.search);
+      
+    
+        const searchQuery = urlParams.get("q");
+        if (searchQuery) {
+          const searchInput = document.querySelector('input[name="q"]');
+          if (searchInput) {
+            searchInput.value = searchQuery;
+          }
+        }
+     
+        const categoryFilters = urlParams.getAll("qfCategory");
+        categoryFilters.forEach((category) => {
+          const checkbox = document.getElementById(`category:${category}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
+        const brandFilters = urlParams.getAll("qfBrand");
+        brandFilters.forEach((brand) => {
+          const checkbox = document.getElementById(`brand:${brand}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
+        const sizeFilters = urlParams.getAll("qfSize");
+        sizeFilters.forEach((size) => {
+          const checkbox = document.getElementById(`size:${size}`);
+          console.log(checkbox);
+          console.log(`size:${size.size}`);
+          if (checkbox) {
+            checkbox.checked = true;
+          }
+        });
+    
+        const minPrice = urlParams.get("minPrice");
+        const maxPrice = urlParams.get("maxPrice");
+      
+        if (minPrice) {
+          document.getElementById("price-min").value = minPrice;
+        }
+        if (maxPrice) {
+          document.getElementById("price-max").value = maxPrice;
+        }
       }
-    });
-  
-    // Preserve price range values
-    const minPrice = urlParams.get("minPrice");
-    const maxPrice = urlParams.get("maxPrice");
-  
-    if (minPrice) {
-      document.getElementById("price-min").value = minPrice;
-    }
-    if (maxPrice) {
-      document.getElementById("price-max").value = maxPrice;
-    }
-  }
-  
+    
 
-  window.onload = preserveCheckboxState;
-
-
-</script>
+    </script>

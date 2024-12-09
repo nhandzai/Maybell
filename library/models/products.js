@@ -3,28 +3,56 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class products extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      this.hasMany(models.productSizes, { foreignKey: 'productId', as: 'sizes' });
+      this.hasMany(models.productImages, { foreignKey: 'productId', onDelete: 'CASCADE' });
+      this.hasMany(models.reviews, { foreignKey: 'productId', onDelete: 'CASCADE' });
+      this.hasMany(models.carts, { foreignKey: 'productId', onDelete: 'CASCADE' });
+      this.hasMany(models.wishlists, { foreignKey: 'productId', onDelete: 'CASCADE' });
+      this.belongsTo(models.categories, { foreignKey: 'categoryId', onDelete: 'SET NULL' });
+      this.belongsTo(models.brands, { foreignKey: 'brandId', onDelete: 'SET NULL' });
+
+    
+      this.belongsToMany(models.sizes, {
+        through: models.productSizes,
+        foreignKey: 'productId',
+        otherKey: 'sizeId',
+        onDelete: 'CASCADE'
+      });
     }
   }
 
   products.init({
-    name: DataTypes.STRING,
-    price: DataTypes.FLOAT,
-    imageLink: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
     shortDescription: DataTypes.TEXT,
     detail: DataTypes.TEXT,
     material: DataTypes.STRING,
     weightKg: DataTypes.FLOAT,
-    stockQuantity: DataTypes.INTEGER,
     realPrice: DataTypes.FLOAT,
-    brand: DataTypes.STRING,
-    category: DataTypes.STRING,
+    brandId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'brands',
+        key: 'id',
+      },
+    },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'categories',
+        key: 'id',
+      },
+    },
+    stockQuantity: DataTypes.INTEGER,
+
     promotion: {
       type: DataTypes.VIRTUAL,
       get() {

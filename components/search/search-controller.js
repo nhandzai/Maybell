@@ -1,49 +1,30 @@
-const { fetchAllProducts, fetchProducts, fetchFilterProducts } = require('./search-model')
+const { fetchAllProducts, fetchProducts, fetchFilterProducts,fetchAllCategories, fetchAllBrands, fetchAllSizes } = require('./search-model')
 const { renderSearchPage } = require('./search-view');
-async function getSearch(req,res,next) {
-    try {
-        if (!req.query.q) {
-          return res.redirect('/catalog');
-        }
-        const query = req.query.q;
-        let products = await fetchProducts(query);
-        if ( req.query.qf || req.query.minPrice || req.query.maxPrice){
-            products = await getFilterProducts(req, res);
-          }
-        renderSearchPage(res, products);
-    } catch (error) {
-        next(error);
+const db = require('../../library/models');
+async function getSearch(req, res, next) {
+ 
+  try {
+    if (!req.query.q) {
+      return res.redirect('/catalog');
     }
-}
-async function getFilterProducts(req, res) {
-    try {
-      const queries = req.query.qf || [];
-  
-      let minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : 0;
-      let maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : 99999;
-  
-      if (isNaN(minPrice)) {
-        minPrice = 0;
-      }
-      if (isNaN(maxPrice)) {
-        maxPrice = 99999;
-      }
+    const limit = 4;
+    const page = req.query.page || 1;
+    const categories = await fetchAllCategories();
+    const brands = await fetchAllBrands();
+    const sizes = await fetchAllSizes();
+    const query = req.query.q;
+   
+    let products = await fetchProducts(query);
+    const LProduct = products.slice((page - 1) * limit, page * limit);
 
-      const queryArray = Array.isArray(queries) ? queries : [queries];
-
-      const searchQuery = req.query.q;
-
-      const allProducts = await fetchProducts(searchQuery);
-
-      const filteredProducts = await fetchFilterProducts(minPrice, maxPrice, queryArray);
-
-      const filteredAndSearchedProducts = allProducts.filter(product =>
-        filteredProducts.some(filteredProduct => filteredProduct.id === product.id)
-      );
-
-      return filteredAndSearchedProducts;
-    } catch (error) {
-      throw error;
-    }
+    const pageCount = Math.ceil(products.length/ limit);
+    
+    renderSearchPage(res, LProduct, categories, brands, sizes, pageCount);
+  } catch (error) {
+    next(error);
   }
-module.exports = { getSearch, getFilterProducts };
+}
+
+
+
+module.exports = { getSearch };

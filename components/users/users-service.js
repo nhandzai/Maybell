@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { User} = require('../../library/models');
+const { users} = require('../../library/models');
 require('dotenv').config();
 
 const registerUser = async (fullName, email, password, country, city) => {
@@ -10,7 +10,7 @@ const registerUser = async (fullName, email, password, country, city) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-        const user = await User.create({
+        const user = await users.create({
             fullName,
             email,
             password: hashedPassword,

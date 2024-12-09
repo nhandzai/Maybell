@@ -1,21 +1,29 @@
 const db = require('../../library/models');
-const { searchProducts, searchFilterProducts } = require('../../library/search');
+const { searchProducts } = require('../../library/search');
 
 async function fetchAllProducts() {
   return await db.products.findAll();
 }
-
-async function fetchProducts(query) {
+async function fetchAllCategories() {
+  const categories = await db.categories.findAll();
+  return categories;
+}
+async function fetchAllBrands() {
+  const brands = await db.brands.findAll();
+  return brands;
+}
+async function fetchAllSizes() {
+  const sizes = await db.sizes.findAll();
+  return sizes;
+}
+async function fetchProducts(query,limit,page) {
   if (!query) {
     throw new Error('Search query is required.');
   }
-  const products = await searchProducts(query); 
+  const products = await searchProducts(query,limit,page); 
   return products;
 }
 
-async function fetchFilterProducts(minPrice, maxPrice, queries) {
-  const products = await searchFilterProducts(minPrice, maxPrice, queries);
-  return products;
-}
 
-module.exports = { fetchAllProducts, fetchProducts, fetchFilterProducts };
+
+module.exports = { fetchAllProducts, fetchProducts ,fetchAllCategories, fetchAllBrands, fetchAllSizes};

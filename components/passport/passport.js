@@ -1,15 +1,14 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const {User} = require('../../library/models');
+const {users} = require('../../library/models');
 
 module.exports = (passport) => {
     passport.use(
         new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
           
             try {
-                console.log("test1: ",email);
-                console.log("testq2: ",await User.findOne({ where: { email } }));
-                const user = await User.findOne({ where: { email } });
+     
+                const user = await users.findOne({ where: { email } });
                 console.log("test2: ",user);
                 if (!user) {
                     return done(null, false, { message: 'User not found.' });
@@ -34,7 +33,7 @@ module.exports = (passport) => {
 
     passport.deserializeUser(async (id, done) => {
         try {
-            const user = await User.findByPk(id,{
+            const user = await users.findByPk(id,{
                 attributes: ['id', 'fullName', 'email'] 
             });
             done(null, user);

@@ -1,45 +1,42 @@
-const { fetchAllProducts, fetchProducts, fetchFilterProducts } = require('./catalog-model');
+const { fetchAllProducts, fetchFilterProducts, fetchAllCategories, fetchAllBrands, fetchAllSizes } = require('./catalog-model');
 const { renderCatalogPage } = require('./catalog-view');
-
+const db = require('../../library/models');
+// Khi gọi lần đầu
 async function getCatalog(req, res, next) {
   try {
-    let products = await fetchAllProducts();
-    if ( req.query.qf || req.query.minPrice || req.query.maxPrice){
-      console.log(req.query.qf, req.query.minPrice, req.query.maxPrice);
-      products = await getFilterProducts(req, res);
-    }
-  
-  
-    renderCatalogPage(res, products);
+   
+    
+    const categories = await fetchAllCategories();
+    const brands = await fetchAllBrands();
+    const sizes = await fetchAllSizes();
+    const limit = 4;
+    const page = req.query.page || 1;
+    const products = await fetchAllProducts(limit,page);
+    const pageCount = Math.ceil(await db.products.count() / limit);
+    console.log("test",products)
+    renderCatalogPage(res, products, categories, brands, sizes,pageCount);
   } catch (error) {
     next(error);
   }
 }
-
-
-
-async function getFilterProducts(req, res) {
+// khi filter hay chuyển trang
+async function filterProduct(req, res, next) {
+ 
   try {
-    const queries = req.query.qf || [];
+    const page= req.query.page || 1;
+    const limit = 4;
 
-    let minPrice = req.query.minPrice ? parseFloat(req.query.minPrice) : 0;
-    let maxPrice = req.query.maxPrice ? parseFloat(req.query.maxPrice) : 99999;
+    const queryParams = req.query;
 
-    if (isNaN(minPrice)) {
-      minPrice = 0;
-    }
-    if (isNaN(maxPrice)) {
-      maxPrice = 99999;
-    }
-    const queryArray = Array.isArray(queries) ? queries : [queries];
+    const products = await fetchFilterProducts(queryParams);
+  const LProduct = products.slice((page - 1) * limit, page * limit);
+  res.json({ products: LProduct, pageCount: page, totalPage: Math.ceil(products.length / limit) });
 
-    const products = await fetchFilterProducts(minPrice, maxPrice, queryArray);
-    return products;
   } catch (error) {
-    throw error;
+    console.error("Error:", error);
+    next(error);
+    console.log("error",error)
   }
 }
 
-
-
-module.exports = { getCatalog, getFilterProducts };
+module.exports = { getCatalog,filterProduct};
