@@ -27,12 +27,19 @@ async function searchProducts(query) {
   return products;
 }
 
-async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice }) {
+async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice, sortBy }) {
   
   const min = minPrice ? parseFloat(minPrice) : 0;
   const max = maxPrice ? parseFloat(maxPrice) : 99999;
 
+  const sortOptions = {
+    htl: ['realPrice', 'DESC'],
+    lth: ['realPrice', 'ASC'],
+    newest: ['createdAt', 'DESC'],
+    oldest: ['createdAt', 'ASC'],
+  };
  
+  const sort = sortBy ? sortOptions[sortBy] || ['id', 'ASC'] : ['id', 'ASC'];
   const categoryIds = qfCategory ? (Array.isArray(qfCategory) ? qfCategory : qfCategory.split(',')) : [];
   const brandIds = qfBrand ? (Array.isArray(qfBrand) ? qfBrand : qfBrand.split(',')) : [];
   const sizeIds = qfSize ? (Array.isArray(qfSize) ? qfSize : qfSize.split(',')) : [];
@@ -93,7 +100,7 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
       },
       
     ],
-    order: [['id', 'ASC']],
+    order: [sort],
 
   });
   console.log("test2",products)

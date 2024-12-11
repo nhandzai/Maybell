@@ -257,11 +257,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const searchQuery = urlParams.get("q");
 
-        //sortBy
-        const sortBy = urlParams.get("sortBy")
-        if(sortBy) {
-          queryParams.push(`sortBy=${encodeURIComponent(sortBy)}`);
-        }
+        
 
         if (searchQuery) {
           queryParams.push(`q=${encodeURIComponent(searchQuery)}`);
@@ -277,7 +273,11 @@
 
         queryParams.push(`minPrice=${minPrice ? encodeURIComponent(minPrice) : ""}`);
         queryParams.push(`maxPrice=${maxPrice ? encodeURIComponent(maxPrice) : ""}`);
-
+        //sortBy
+        const sortBy = urlParams.get("sortBy")
+        if(sortBy) {
+          queryParams.push(`sortBy=${encodeURIComponent(sortBy)}`);
+        }
         // Preserve the page number
         const pageNumber = urlParams.get("page");
 
@@ -366,6 +366,11 @@
 
       window.onload = function () {
         preserveCheckboxState();
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.toString()) {
+          updateQueryString();
+        }
+
       };
 
       function preserveCheckboxState() {
@@ -453,6 +458,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.set("sortBy", buttonId);
         window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
+        updateQueryString();
       }
       function cancelSort() {
         const mainButtonText = document.getElementById("main-button-text");
@@ -460,6 +466,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.delete("sortBy");
         window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
+        updateQueryString();
       }
 
 
