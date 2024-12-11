@@ -212,6 +212,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      isAdmin:{
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
       country: {
         allowNull: false,
         type: Sequelize.STRING
@@ -256,7 +260,7 @@ module.exports = {
       },
       rating: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       comment: {
         type: Sequelize.TEXT

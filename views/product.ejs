@@ -69,8 +69,8 @@
         <%=product.brand.brand %>
       </span></p>
     <p class="mt-5 font-bold"> Cathegory: <span class="font-normal">
-      <%=product.category.category %>
-      
+        <%=product.category.category %>
+
       </span></p>
 
 
@@ -144,9 +144,9 @@
       <tr>
         <td class="border pl-4 font-bold">Size</td>
         <td class="border pl-4">
-          <% product.sizes.forEach(size=> { %> 
+          <% product.sizes.forEach(size=> { %>
             <%=size.size%>
-            <% }) %>
+              <% }) %>
         </td>
       </tr>
 
@@ -160,7 +160,7 @@
       <tr>
         <td class="border pl-4 font-bold">Brands</td>
         <td class="border pl-4">
-          <%= product.brand %>
+          <%=product.brand.brand %>
         </td>
       </tr>
 
@@ -179,59 +179,61 @@
 
   <!-- reviews boxs -->
   <section class="flex flex-col gap-6 ">
-      <!-- box1 -->
-    <article class="border-b border-solid">
-      <div class="flex items-center mb-4">
+    <!-- box1 -->
+    <% product.reviews.forEach(review=> { %>
+      <article class="border-b border-solid">
+        <div class="flex items-center mb-4">
           <img class="w-10 h-10 me-4 rounded-full" src="images/avatar-photo.png" alt="">
           <div class="font-medium">
-              <p>Jese Leos</p>
+
+            <p>
+              <%= review.user.fullName %>
+            </p>
           </div>
-      </div>
-      <footer class="mb-5 text-sm text-gray-500 px-14"><p>Reviewed in the United Kingdom on <time datetime="2017-03-03 19:00">March 3, 2017</time></p></footer>
-      <p class="mb-2 text-gray-500 px-14">This is my third Invicta Pro Diver. They are just fantastic value for money. This one arrived yesterday and the first thing I did was set the time, popped on an identical strap from another Invicta and went in the shower with it to test the waterproofing.... No problems.</p>
-      <p class="mb-3 text-gray-500 px-14">It is obviously not the same build quality as those very expensive watches. But that is like comparing a Citroën to a Ferrari. This watch was well under £100! An absolute bargain.</p>
-    </article>
-      <!-- box2 -->
-    <article class="border-b border-solid">
-      <div class="flex items-center mb-4">
-          <img class="w-10 h-10 me-4 rounded-full" src="images/avatar-photo.png" alt="">
-          <div class="font-medium">
-              <p>Jese Leos</p>
-          </div>
-      </div>
-      <footer class="mb-5 text-sm text-gray-500 px-14"><p>Reviewed in the United Kingdom on <time datetime="2017-03-03 19:00">March 3, 2017</time></p></footer>
-      <p class="mb-2 text-gray-500 px-14">This is my third Invicta Pro Diver. They are just fantastic value for money. This one arrived yesterday and the first thing I did was set the time, popped on an identical strap from another Invicta and went in the shower with it to test the waterproofing.... No problems.</p>
-      <p class="mb-3 text-gray-500 px-14">It is obviously not the same build quality as those very expensive watches. But that is like comparing a Citroën to a Ferrari. This watch was well under £100! An absolute bargain.</p>
-    </article>
+        </div>
+        <footer class="mb-5 text-sm text-gray-500 px-14">
+          <p>Reviewed on <time>
+              <%= review.updatedAt %>
+            </time></p>
+        </footer>
+        <p class="mb-2 text-gray-500 px-14">
+          <%= review.comment %>
+        </p>
+
+      </article>
+      <% }); %>
+        <!-- box2 -->
+
   </section>
   <!-- Paging button -->
   <div id="pagination" class="flex justify-start my-5 gap-2">
-      <div id="page" class="flex gap-2 ml-4">
-          <button
-            class="px-4 py-2 border rounded transition-colors page-btn"
-            value="1" onclick="updatePage(event)">
-            1
-          </button>
-          <button
-            class="px-4 py-2 border rounded transition-colors page-btn"
-            value="2" onclick="updatePage(event)">
-            2
-        </button>
-          <button
-            class="px-4 py-2 border rounded transition-colors page-btn"
-            value="3" onclick="updatePage(event)">
-            3
-        </button>
-      </div>
+    <div id="page" class="flex gap-2 ml-4">
+      <button class="px-4 py-2 border rounded transition-colors page-btn" value="1" onclick="updatePage(event)">
+        1
+      </button>
+      <button class="px-4 py-2 border rounded transition-colors page-btn" value="2" onclick="updatePage(event)">
+        2
+      </button>
+      <button class="px-4 py-2 border rounded transition-colors page-btn" value="3" onclick="updatePage(event)">
+        3
+      </button>
+    </div>
   </div>
 
   <!-- Review form -->
-  <form class="max-w-sm">
+  <form class="max-w-sm" id="review" action="/api/review" method="post">
     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 ">Your Reviews</label>
-    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 " placeholder="Leave a comment..."></textarea>
-    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none">
+
+    <textarea id="message" rows="4"
+      class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+      placeholder="Leave a comment..."></textarea>
+    <div id="sendError" class="text-pink-800 hidden px-3 py-2 mt-2 rounded-md text-sm"></div>
+    <!-- Error message container -->
+    <button type="submit"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none">
       Send
     </button>
+
   </form>
 </section>
 <!-- /reviews  -->
@@ -244,3 +246,42 @@
     <%- include('product-home', { products: relatedProducts }) %>
   </section>
 </section>
+<script>
+
+  document.getElementById('review').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(window.location.search);
+    const idQuery = urlParams.get("id");
+
+
+    const message = document.getElementById('message').value;
+    const productId = idQuery;
+
+    console.log(message, productId);
+    try {
+      const response = await fetch('/api/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message, productId })
+      })
+      const data = await response.json();
+      console.log(data)
+
+
+      if (response.ok) {
+
+        location.reload();
+      }
+      else {
+        document.getElementById('sendError').textContent = data.message || 'Send failed.';
+        document.getElementById('sendError').classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+  });
+
+</script>
