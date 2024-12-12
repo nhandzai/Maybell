@@ -9,7 +9,6 @@ module.exports = (passport) => {
             try {
      
                 const user = await users.findOne({ where: { email } });
-                console.log("test2: ",user);
                 if (!user) {
                     return done(null, false, { message: 'User not found.' });
                 }

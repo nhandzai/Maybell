@@ -103,7 +103,6 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
     order: [sort],
 
   });
-  console.log("test2",products)
   return products;
 
 }

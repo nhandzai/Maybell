@@ -257,7 +257,6 @@
     const message = document.getElementById('message').value;
     const productId = idQuery;
 
-    console.log(message, productId);
     try {
       const response = await fetch('/api/review', {
         method: 'POST',
@@ -267,8 +266,6 @@
         body: JSON.stringify({ message, productId })
       })
       const data = await response.json();
-      console.log(data)
-
 
       if (response.ok) {
 

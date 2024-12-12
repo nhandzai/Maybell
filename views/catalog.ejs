@@ -404,8 +404,6 @@
         const sizeFilters = urlParams.getAll("qfSize");
         sizeFilters.forEach((size) => {
           const checkbox = document.getElementById(`size:${size}`);
-          console.log(checkbox);
-          console.log(`size:${size.size}`);
           if (checkbox) {
             checkbox.checked = true;
           }

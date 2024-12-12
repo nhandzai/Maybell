@@ -22,7 +22,6 @@ async function sortProductsByPrice(limit) {
       }
     ]
   });
-  console.log(products)
   return products
 
 }

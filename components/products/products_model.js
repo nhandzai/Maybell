@@ -44,8 +44,6 @@ async function fetchProductById(productId) {
     ]
   });
   const productData = product ? product.toJSON() : null;
-
-  console.log("productsss", productData);
   return product;
 }
 

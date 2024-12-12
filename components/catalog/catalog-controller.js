@@ -34,7 +34,6 @@ async function filterProduct(req, res, next) {
   } catch (error) {
     console.error("Error:", error);
     next(error);
-    console.log("error",error)
   }
 }
 
