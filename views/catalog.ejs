@@ -284,9 +284,8 @@
         if(isClickNum === true){
           queryParams.push(`page=${pageNumber}`);
           isClickNum = false;
-        } else {
+        } else  {
           queryParams.push(`page=1`);
-        
         }
         window.history.pushState({}, "", `${window.location.pathname}?${queryParams.join("&")}`);
         
@@ -368,6 +367,7 @@
         preserveCheckboxState();
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.toString()) {
+          isClickNum = true;
           updateQueryString();
         }
 
@@ -376,7 +376,6 @@
       function preserveCheckboxState() {
         const urlParams = new URLSearchParams(window.location.search);
       
-    
         const searchQuery = urlParams.get("q");
         if (searchQuery) {
           const searchInput = document.querySelector('input[name="q"]');
@@ -421,6 +420,7 @@
         mainButtonText.textContent = buttonTextMap[sortBy] || "Sort By";
 
         const pageNumber = urlParams.get("page");
+
         if (pageNumber) {
           const pageNumberId = `page-button-${pageNumber}`;
           const pageNumberButton = document.getElementById(pageNumberId);
