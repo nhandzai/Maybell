@@ -23,12 +23,27 @@ async function fetchProductById(productId) {
       {
         model: db.brands,
         attributes: ['brand'],
-        where: { id:  db.Sequelize.col('products.categoryId') },
+        where: { id:  db.Sequelize.col('products.brandId') },
         required: false
+      },
+      {
+        model: db.reviews,
+        attributes: [ 'userId','comment', 'updatedAt'],
+        where: { productId: productId },
+        required: false ,
+        include: [
+          {
+            model: db.users,
+            attributes: ['fullName'],
+            where: { id: db.Sequelize.col('reviews.userId')},
+            required: false
+          }
+        ]
       }
+    
     ]
   });
-  console.log(product)
+  const productData = product ? product.toJSON() : null;
   return product;
 }
 
@@ -37,6 +52,13 @@ async function fetchProductById(productId) {
 async function fetchProductsByField({ productId, limit }) {
   return await searchProductsByField({ productId, limit });
 }
+async function createReview ( req,res,{ message, productId })
+{
+  const review = await db.reviews.create({
+    comment: message,
+    productId: productId,
+    userId: req.user.id,
+});
+}
 
-
-module.exports = { fetchProductById, fetchProductsByField };
+module.exports = { fetchProductById, fetchProductsByField, createReview };

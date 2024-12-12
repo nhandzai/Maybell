@@ -13,7 +13,6 @@ async function getCatalog(req, res, next) {
     const page = req.query.page || 1;
     const products = await fetchAllProducts(limit,page);
     const pageCount = Math.ceil(await db.products.count() / limit);
-    console.log("test",products)
     renderCatalogPage(res, products, categories, brands, sizes,pageCount);
   } catch (error) {
     next(error);
@@ -35,7 +34,6 @@ async function filterProduct(req, res, next) {
   } catch (error) {
     console.error("Error:", error);
     next(error);
-    console.log("error",error)
   }
 }
 
