@@ -1,3 +1,4 @@
+
 const db = require('../../library/models');
 const { searchProductsByField } = require('../../library/search');
 async function fetchProductById(productId) {
@@ -62,3 +63,4 @@ async function createReview ( req,res,{ message, productId })
 }
 
 module.exports = { fetchProductById, fetchProductsByField, createReview };
+  
