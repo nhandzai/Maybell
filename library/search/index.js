@@ -111,7 +111,6 @@ async function searchProductsByField({ productId, limit }) {
     const product = await db.products.findOne({
       where: {
         id: productId,
-        id: { [db.Sequelize.Op.ne]: productId },
       },
       attributes: ['categoryId'],
     });
@@ -121,10 +120,11 @@ async function searchProductsByField({ productId, limit }) {
     }
 
     const categoryId = product.categoryId;
-
-
     const similarProducts = await db.products.findAll({
-      where: { categoryId },
+      where: { 
+        categoryId,
+        id: { [db.Sequelize.Op.ne]: productId }
+       },
       limit: limit || 10,
       include: [
         {
@@ -135,7 +135,6 @@ async function searchProductsByField({ productId, limit }) {
         },
       ],
     });
-    
     return similarProducts;
   } catch (error) {
     console.error('Error finding similar products:', error);
