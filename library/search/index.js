@@ -6,7 +6,7 @@ async function searchProducts(query) {
   }
 
   const products = await db.products.findAll({
- 
+
 
     include: [
       {
@@ -27,8 +27,8 @@ async function searchProducts(query) {
   return products;
 }
 
-async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, maxPrice, sortBy }) {
-  
+async function searchFilterProducts({ q, qfCategory, qfBrand, qfSize, minPrice, maxPrice, sortBy }) {
+
   const min = minPrice ? parseFloat(minPrice) : 0;
   const max = maxPrice ? parseFloat(maxPrice) : 99999;
 
@@ -38,15 +38,14 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
     newest: ['createdAt', 'DESC'],
     oldest: ['createdAt', 'ASC'],
   };
- 
+
   const sort = sortBy ? sortOptions[sortBy] || ['id', 'ASC'] : ['id', 'ASC'];
   const categoryIds = qfCategory ? (Array.isArray(qfCategory) ? qfCategory : qfCategory.split(',')) : [];
   const brandIds = qfBrand ? (Array.isArray(qfBrand) ? qfBrand : qfBrand.split(',')) : [];
   const sizeIds = qfSize ? (Array.isArray(qfSize) ? qfSize : qfSize.split(',')) : [];
 
   const whereClause = {};
-  if(q)
-  {
+  if (q) {
     whereClause[db.Sequelize.Op.or] = [
       { name: { [db.Sequelize.Op.like]: `%${q}%` } },
       { shortDescription: { [db.Sequelize.Op.like]: `%${q}%` } }
@@ -71,11 +70,11 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
     };
   }
 
-  
-  
-  const products= await db.products.findAll({
+
+
+  const products = await db.products.findAll({
     where: whereClause,
-    
+
     include: [
       {
         model: db.categories,
@@ -98,7 +97,7 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
         where: { isMain: true },
         required: false,
       },
-      
+
     ],
     order: [sort],
 
@@ -108,10 +107,12 @@ async function searchFilterProducts({ q,qfCategory, qfBrand, qfSize, minPrice, m
 }
 async function searchProductsByField({ productId, limit }) {
   try {
-   
+
     const product = await db.products.findOne({
-      where: { id: productId },
-      attributes: ['categoryId'], 
+      where: {
+        id: productId,
+      },
+      attributes: ['categoryId'],
     });
 
     if (!product) {
@@ -119,21 +120,21 @@ async function searchProductsByField({ productId, limit }) {
     }
 
     const categoryId = product.categoryId;
-
-  
     const similarProducts = await db.products.findAll({
-      where: { categoryId },
-      limit: limit || 10, 
+      where: { 
+        categoryId,
+        id: { [db.Sequelize.Op.ne]: productId }
+       },
+      limit: limit || 10,
       include: [
         {
           model: db.productImages,
           attributes: ['image'],
-          where: { isMain: true }, 
+          where: { isMain: true },
           required: false,
         },
       ],
     });
-
     return similarProducts;
   } catch (error) {
     console.error('Error finding similar products:', error);

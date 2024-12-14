@@ -1,3 +1,4 @@
+
 const db = require('../../library/models');
 const { searchProductsByField } = require('../../library/search');
 async function fetchProductById(productId) {
@@ -43,7 +44,7 @@ async function fetchProductById(productId) {
     
     ]
   });
-  const productData = product ? product.toJSON() : null;
+ 
   return product;
 }
 
