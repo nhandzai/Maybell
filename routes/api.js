@@ -10,7 +10,8 @@ const { isAuthenticated } = require('../components/middleware/middleware');
 router.post('/register', userController.createUser);
 router.post('/login', userController.authenticateUser);
 router.get('/products',catalogController.filterProduct);
-router.post('/review',isAuthenticated,productController.addReview)
+router.post('/review',isAuthenticated,productController.addReview);
+router.get('/pagingReview',productController.pagingReviews);
 
 
 

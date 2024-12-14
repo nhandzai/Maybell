@@ -44,7 +44,7 @@ async function fetchProductById(productId) {
     
     ]
   });
-  const productData = product ? product.toJSON() : null;
+ 
   return product;
 }
 
@@ -63,4 +63,3 @@ async function createReview ( req,res,{ message, productId })
 }
 
 module.exports = { fetchProductById, fetchProductsByField, createReview };
-  
