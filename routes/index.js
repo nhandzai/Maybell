@@ -10,6 +10,7 @@ const contactUsController = require('../components/contact-us/contact-us-control
 const userController = require('../components/users/users-controller');
 const searchController = require('../components/search/search-controller');
 const accountPageController = require('../components/account-page/account-page-controller')
+const cartController = require('../components/cart/cart-controller')
 
 //middleware
 const { isAuthenticated } = require('../components/middleware/middleware');
@@ -42,7 +43,7 @@ router.get('/manage-address', isAuthenticated, accountPageController.getManageAd
 
 router.get('/change-password', isAuthenticated, accountPageController.getChangePassword);
 
-
+router.get('/cart',cartController.getCartPage);
 
 
 module.exports = router;
