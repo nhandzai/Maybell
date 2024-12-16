@@ -16,7 +16,19 @@
   <meta name="msapplication-TileColor" content="#ffc40d" />
   <meta name="theme-color" content="#ffffff" />
 
-
+  <style>
+    /* Remove default browser arrows for number inputs */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    
+    input[type="number"] {
+      -moz-appearance: textfield; /* Firefox */
+      appearance: textfield; /* Modern browsers */
+    }
+  </style>
   
 </head>
 
