@@ -68,8 +68,17 @@ async function pagingReviews(req, res, next) {
     console.error("Error:", error);
     next(error);
   }
-
-
 }
 
-module.exports = { getProduct, addReview, pagingReviews };
+async function addToCart(req, res, next) {
+  try {
+    console.log(req.body)
+    // cái này là api lấy json ra
+    // json này chứa bao gồm id và quantity
+    // dùng nó để gắn vào thông tin vào database ở bảng cart hay j đó để hiển thị ở trang cart
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { getProduct, addReview, pagingReviews, addToCart };
