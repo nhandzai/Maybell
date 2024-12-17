@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.users, { foreignKey: 'userId', onDelete: 'CASCADE' });
       this.belongsTo(models.products, { foreignKey: 'productId', onDelete: 'CASCADE' });
-      this.belongsTo(models.carts, { foreignKey: 'cartId', onDelete: 'SET NULL' });
+      //this.belongsTo(models.carts, { foreignKey: 'cartId', onDelete: 'SET NULL' });
       this.hasOne(models.orders, { foreignKey: 'cartId', onDelete: 'SET NULL' });
     }
   }

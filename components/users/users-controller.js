@@ -6,7 +6,7 @@ const getSignUp = (req, res) => {
     res.render('sign-up', { title: 'Sign Up' });
 };
 const getLogin = (req, res) => {
-    res.render('login-in', { title: 'Log in' });
+    res.render('log-in', { title: 'Log in' });
 }
 
 const createUser = async (req, res) => {
