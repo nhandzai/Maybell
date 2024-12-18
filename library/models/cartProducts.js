@@ -2,28 +2,32 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class orders extends Model {
+  class cartProducts extends Model {
     static associate(models) {
-      this.belongsTo(models.users, { foreignKey: 'userId', onDelete: 'CASCADE' });
       this.belongsTo(models.carts, { foreignKey: 'cartId', onDelete: 'CASCADE' });
+      this.belongsTo(models.products, { foreignKey: 'productId', onDelete: 'CASCADE' });
     }
   }
 
-  orders.init({
-    userId: {
+  cartProducts.init({
+    cartId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    cartId: {
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   }, {
     sequelize,
-    modelName: 'orders',
-    tableName: 'orders',
+    modelName: 'cartProducts',
+    tableName: 'cartProducts',
     timestamps: true,
   });
 
-  return orders;
+  return cartProducts;
 };

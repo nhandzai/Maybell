@@ -14,6 +14,7 @@ router.get('/products',catalogController.filterProduct);
 router.post('/review',isAuthenticated,productsController.addReview);
 router.get('/pagingReview',productsController.pagingReviews);
 router.post('/add-to-cart',cartController.addToCart);
+router.post('/update-cart',cartController.updateCart);
 
 
 

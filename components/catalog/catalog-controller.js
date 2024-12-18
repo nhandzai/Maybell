@@ -1,7 +1,7 @@
 const { fetchAllProducts, fetchFilterProducts, fetchAllCategories, fetchAllBrands, fetchAllSizes } = require('./catalog-model');
 const { renderCatalogPage } = require('./catalog-view');
 const db = require('../../library/models');
-// Khi gọi lần đầu
+
 async function getCatalog(req, res, next) {
   try {
    
@@ -9,16 +9,13 @@ async function getCatalog(req, res, next) {
     const categories = await fetchAllCategories();
     const brands = await fetchAllBrands();
     const sizes = await fetchAllSizes();
-    const limit = 4;
-    const page = req.query.page || 1;
-    const products = await fetchAllProducts(limit,page);
-    const pageCount = Math.ceil(await db.products.count() / limit);
-    renderCatalogPage(res, products, categories, brands, sizes,pageCount);
+    
+    renderCatalogPage(res, categories, brands, sizes);
   } catch (error) {
     next(error);
   }
 }
-// khi filter hay chuyển trang
+
 async function filterProduct(req, res, next) {
  
   try {

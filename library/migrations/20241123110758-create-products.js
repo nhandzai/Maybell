@@ -94,23 +94,23 @@ module.exports = {
       realPrice: {
         type: Sequelize.FLOAT
       },
-      brandId: { 
+      brandId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
           model: 'brands',
           key: 'id'
         },
-        onDelete: 'SET NULL' 
+        onDelete: 'SET NULL'
       },
-      categoryId: { 
+      categoryId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
-          model: 'categories', 
+          model: 'categories',
           key: 'id'
         },
-        onDelete: 'SET NULL' 
+        onDelete: 'SET NULL'
       },
       stockQuantity: {
         type: Sequelize.INTEGER
@@ -125,7 +125,7 @@ module.exports = {
       }
     });
 
-    
+
     await queryInterface.createTable('productSizes', {
       id: {
         allowNull: false,
@@ -212,7 +212,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      isAdmin:{
+      isAdmin: {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
@@ -290,6 +290,43 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
+      totalPrice: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    });
+
+    // Tạo bảng 'cartProducts'
+    await queryInterface.createTable('cartProducts', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      cartId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'carts',
+          key: 'id'
+        },
+        onDelete: 'CASCADE'
+      },
       productId: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -302,7 +339,6 @@ module.exports = {
       quantity: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 1
       },
       createdAt: {
         allowNull: false,
@@ -313,7 +349,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    
+
     // Tạo bảng 'orders'
     await queryInterface.createTable('orders', {
       id: {
@@ -333,17 +369,14 @@ module.exports = {
       },
       cartId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'carts',
           key: 'id'
         },
-        onDelete: 'SET NULL',  
-        allowNull: true     
+      
       },
-      totalPrice: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-      },
+     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -353,9 +386,6 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-    
-
-   
     // Tạo bảng 'wishlists'
     await queryInterface.createTable('wishlists', {
       id: {
@@ -398,12 +428,12 @@ module.exports = {
       { id: 4, brand: "Fornighte", createdAt: new Date(), updatedAt: new Date() }
     ];
     const categories = [
-      { id: 1, category: "Matrass", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/xzrabi5dyavxvawj6k7g?_a=BAMCkGXw0",createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, category: "Kitchen",image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/okws0n4ou5ef17bx2wfr?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
-      { id: 3, category: "Bedroom",image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/lvtowz7waod1u8oedzlo?_a=BAMCkGXw0" , createdAt: new Date(), updatedAt: new Date() },
-      { id: 4, category: "Outdoor",image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ef2vefjenfgxgsd5ppvl?_a=BAMCkGXw0" ,createdAt: new Date(), updatedAt: new Date() },
-      { id: 5, category: "Living Room",image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/x5geuqpz1ntxuzbifx9x?_a=BAMCkGXw0" ,createdAt: new Date(), updatedAt: new Date() },
-      { id: 6, category: "Sofa",image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ittdhbnjvkcf3t1qh3fx?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() }
+      { id: 1, category: "Matrass", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/xzrabi5dyavxvawj6k7g?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
+      { id: 2, category: "Kitchen", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/okws0n4ou5ef17bx2wfr?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
+      { id: 3, category: "Bedroom", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/lvtowz7waod1u8oedzlo?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
+      { id: 4, category: "Outdoor", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ef2vefjenfgxgsd5ppvl?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
+      { id: 5, category: "Living Room", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/x5geuqpz1ntxuzbifx9x?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() },
+      { id: 6, category: "Sofa", image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ittdhbnjvkcf3t1qh3fx?_a=BAMCkGXw0", createdAt: new Date(), updatedAt: new Date() }
     ];
     const sizes = [
       { id: 1, size: "XS", createdAt: new Date(), updatedAt: new Date() },
@@ -412,7 +442,7 @@ module.exports = {
       { id: 4, size: "L", createdAt: new Date(), updatedAt: new Date() },
       { id: 5, size: "XL", createdAt: new Date(), updatedAt: new Date() }
     ];
-    
+
     const products = [
       {
         name: "CHAIR", // 1
@@ -423,7 +453,7 @@ module.exports = {
         weightKg: 4.5,
         realPrice: 45.00,
         brandId: "1",
-        categoryId: 5, 
+        categoryId: 5,
         stockQuantity: 0,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -437,7 +467,7 @@ module.exports = {
         weightKg: 34.0,
         realPrice: 50.00,
         brandId: "2",
-        categoryId: 6, 
+        categoryId: 6,
         stockQuantity: 12,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -465,7 +495,7 @@ module.exports = {
         weightKg: 54.4,
         realPrice: 45.00,
         brandId: "4",
-        categoryId: 1, 
+        categoryId: 1,
         stockQuantity: 54,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -549,7 +579,7 @@ module.exports = {
         weightKg: 12.5,
         realPrice: 32.00,
         brandId: "2",
-        categoryId: 4, 
+        categoryId: 4,
         stockQuantity: 20,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -621,36 +651,36 @@ module.exports = {
       { productId: 12, sizeId: 3, createdAt: new Date(), updatedAt: new Date() }, // M
       { productId: 12, sizeId: 4, createdAt: new Date(), updatedAt: new Date() }, // L
     ];
-    
-    
-    const productImages = [
-      { productId: 1, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/e2mwhai6uet8gxno5zxm?_a=BAMCkGXw0", isMain: true,  createdAt: new Date(), updatedAt: new Date() },
 
-      { productId: 2, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/limmnaufvet2jnxwotxa?_a=BAMCkGXw0", isMain: true,createdAt: new Date(), updatedAt: new Date() },
-      
+
+    const productImages = [
+      { productId: 1, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/e2mwhai6uet8gxno5zxm?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 2, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/limmnaufvet2jnxwotxa?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
       { productId: 3, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/okws0n4ou5ef17bx2wfr?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
-    
-      { productId: 4, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/uj4b9e27lyno9qxwyxsd?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-    
-      { productId: 5, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/lvtowz7waod1u8oedzlo?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-  
-      { productId: 6, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ef2vefjenfgxgsd5ppvl?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-      { productId: 7, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ittdhbnjvkcf3t1qh3fx?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-      { productId: 8, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/mvnp7fxyrbumueyo1guc?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-    
-      { productId: 9, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/xzrabi5dyavxvawj6k7g?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-      { productId: 10, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/tqowkzicsxelaqfdvbbi?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-      { productId: 11, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/x5geuqpz1ntxuzbifx9x?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-      { productId: 12, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/pcvxtzvuvk2rvcpzfvf9?_a=BAMCkGXw0",isMain: true, createdAt: new Date(), updatedAt: new Date() },
-     
-    
+
+      { productId: 4, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/uj4b9e27lyno9qxwyxsd?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 5, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/lvtowz7waod1u8oedzlo?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 6, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ef2vefjenfgxgsd5ppvl?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 7, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/ittdhbnjvkcf3t1qh3fx?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 8, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/mvnp7fxyrbumueyo1guc?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 9, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/xzrabi5dyavxvawj6k7g?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 10, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/tqowkzicsxelaqfdvbbi?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 11, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/x5geuqpz1ntxuzbifx9x?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+      { productId: 12, image: "https://res.cloudinary.com/dplrs7uia/image/upload/c_auto,g_auto,h_376,w_564/pcvxtzvuvk2rvcpzfvf9?_a=BAMCkGXw0", isMain: true, createdAt: new Date(), updatedAt: new Date() },
+
+
     ];
-    
+
     await queryInterface.bulkInsert('brands', brands);
     await queryInterface.bulkInsert('sizes', sizes);
     await queryInterface.bulkInsert('categories', categories);
@@ -672,9 +702,10 @@ module.exports = {
     await queryInterface.dropTable('reviews');
     await queryInterface.dropTable('orders');
     await queryInterface.dropTable('carts');
+    await queryInterface.dropTable('cartProducts');
     await queryInterface.dropTable('wishlists');
- 
-    
+
+
 
 
   }

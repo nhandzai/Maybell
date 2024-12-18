@@ -5,9 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class carts extends Model {
     static associate(models) {
       this.belongsTo(models.users, { foreignKey: 'userId', onDelete: 'CASCADE' });
-      this.belongsTo(models.products, { foreignKey: 'productId', onDelete: 'CASCADE' });
-      //this.belongsTo(models.carts, { foreignKey: 'cartId', onDelete: 'SET NULL' });
-      this.hasOne(models.orders, { foreignKey: 'cartId', onDelete: 'SET NULL' });
+      this.hasMany(models.cartProducts, { foreignKey: 'cartId', onDelete: 'CASCADE' });
     }
   }
 
@@ -15,29 +13,21 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
     },
-    productId: {
-      type: DataTypes.INTEGER,
+    totalPrice: {
+      type: DataTypes.FLOAT,
       allowNull: false,
-      references: {
-        model: 'products',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
+      defaultValue:true,
     },
-    quantity: {
-      type: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: 1,
+      defaultValue: true,
     },
   }, {
     sequelize,
     modelName: 'carts',
+    tableName: 'carts',
     timestamps: true,
   });
 

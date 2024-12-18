@@ -18,9 +18,6 @@ function updatePage(event) {
     const urlParams = new URLSearchParams(window.location.search);
     isClickNum = true;
     urlParams.set("page", pageNumber);
-
-
-
     window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
 
     updateQueryString();
@@ -55,7 +52,7 @@ function updateQueryString() {
         queryParams.push(`sortBy=${encodeURIComponent(sortBy)}`);
     }
     // Preserve the page number
-    const pageNumber = urlParams.get("page");
+    const pageNumber = urlParams.get("page") || 1; 
 
     if (isClickNum === true) {
         queryParams.push(`page=${pageNumber}`);
@@ -111,14 +108,48 @@ function updateQueryString() {
                       <p class="font-medium text-violet-900">
                         $${product.realPrice} <span id="priceProduct" class="text-sm text-gray-500 line-through">$${product.price}</span>
                       </p>
-                      <div>
-                        <button class="my-5 h-10 w-full bg-violet-900 text-white">Add to cart</button>
-                      </div>
+                      <form id="addToCartForm-${product.id}" action="/api/add-to-cart" method="post">
+                <div>
+                  <button class="my-5 h-10 w-full bg-violet-900 text-white"type="submit">
+                    Add to cart
+                  </button>
+                  <input name="id" value="${product.id}" hidden />
+                </div>
+              </form>
                     </div>
                   </div>
                 </div>
               `;
                 productContainer.appendChild(productElement);
+            });
+            const forms = document.querySelectorAll('[id^="addToCartForm-"]');
+            forms.forEach(form => {
+                form.addEventListener('submit', async (event) => {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: form.method,
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data),
+                        });
+
+                        const result = await response.json();
+
+                        if (response.ok) {
+                            console.log(result);
+                            alert(result);
+                        } else {
+                            alert(result);
+                        }
+                    } catch (error) {
+                        console.error('Error submitting form:', error);
+                    }
+                });
             });
 
 
@@ -144,8 +175,8 @@ window.onload = function () {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.toString()) {
         isClickNum = true;
-        updateQueryString();
     }
+    updateQueryString();
 
 };
 
@@ -242,33 +273,4 @@ function cancelSort() {
     window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
     updateQueryString();
 }
-
-//api add to cart
-const form = document.getElementById('addToCartForm');
-form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        const response = await fetch(form.action, {
-            method: form.method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            alert(result.message);
-        } else {
-            alert(result.message);
-        }
-    } catch (error) {
-        console.error('Error submitting form:', error);
-    }
-});
-
 

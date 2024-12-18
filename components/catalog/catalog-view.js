@@ -1,11 +1,11 @@
-async function renderCatalogPage(res, products, categories, brands, sizes,pageCount) {
+async function renderCatalogPage(res,  categories, brands, sizes) {
   res.render('catalog', {
     title: 'Catalog',
-    products: products,
+  
     categories: categories,
     brands: brands,
     sizes: sizes,
-    pageCount: pageCount
+  
 
   });
 }

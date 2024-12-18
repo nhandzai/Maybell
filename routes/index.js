@@ -43,7 +43,7 @@ router.get('/manage-address', isAuthenticated, accountPageController.getManageAd
 
 router.get('/change-password', isAuthenticated, accountPageController.getChangePassword);
 
-router.get('/cart',cartController.getCartPage);
+router.get('/cart',isAuthenticated,cartController.getCartPage);
 
 
 module.exports = router;

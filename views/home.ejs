@@ -185,9 +185,14 @@
                       </span>
               </p>
               <div>
-                  <button class="my-5 h-10 w-full bg-violet-900 text-white">
+                <form id="addToCartForm-${product.id}" action="/api/add-to-cart" method="post">
+                  <div>
+                    <button class="my-5 h-10 w-full bg-violet-900 text-white" type="submit">
                       Add to cart
-                  </button>
+                    </button>
+                    <input name="id" value="<%= product.id %>" hidden />
+                  </div>
+                </form>
               </div>
           </div>
       </div>
@@ -195,3 +200,4 @@
     <% }) %>
 </section>
 <!-- /Recommendations -->
+<script type="text/javascript" src="javascripts/home.js"></script>
