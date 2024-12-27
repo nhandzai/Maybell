@@ -17,9 +17,9 @@ async function addToCart(req, res) {
 
         addProduct(productId, quantityValue, userId);
 
-        res.json("Product added to cart successfullyyy!");
+        res.json({ message: "Product added to cart successfully!" });
     } catch (error) {
-        res.json("An error occurred while adding the product to the cart.");
+        res.json({ message: "An error occurred while adding the product to the cart." });
     }
 }
 async function updateCart(req, res) {
