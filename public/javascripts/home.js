@@ -17,10 +17,9 @@ forms.forEach(form => {
             const result = await response.json();
 
             if (response.ok) {
-                console.log(result);
-                alert(result);
+                alert(result.message);
             } else {
-                alert(result);
+                alert(result.message);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
