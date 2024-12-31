@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    isAdmin:{
+    isAdmin: {
       defaultValue: false,
-      type:DataTypes.BOOLEAN,
+      type: DataTypes.BOOLEAN,
       allowNull: true,
     },
     country: {
@@ -38,6 +38,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,  
+    },
+    sex: {
+      type: DataTypes.ENUM('Male', 'Female'),
+      allowNull: true,  
+    },
+    bio: {
+      type: DataTypes.TEXT,
+      allowNull: true,  
+    }
   }, {
     sequelize,
     modelName: 'users',

@@ -123,9 +123,32 @@
           <p>
             <%= user_db.fullName %>
           </p>
-          <p>
-            <%= user_db.email %>
-          </p>
+          
+          <% if (user_db.email) { %>
+            <p><strong>Email:</strong> <%= user_db.email %></p>
+          <% } else { %>
+            <p><strong>Email:</strong> Not updated</p>
+          <% } %>
+          
+          <% if (user_db.phone) { %>
+            <p><strong>Phone:</strong> <%= user_db.phone %></p>
+          <% } else { %>
+            <p><strong>Phone:</strong> Not updated</p>
+          <% } %>
+          
+          <% if (user_db.sex) { %>
+            <p><strong>Sex:</strong> <%= user_db.sex %></p>
+          <% } else { %>
+            <p><strong>Sex:</strong> Not updated</p>
+          <% } %>
+          
+          <% if (user_db.bio) { %>
+            <p><strong>Bio:</strong> <%= user_db.bio %></p>
+          <% } else { %>
+            <p><strong>Bio:</strong> Not updated</p>
+          <% } %>
+            
+          
 
         </div>
       </div>
