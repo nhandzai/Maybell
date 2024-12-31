@@ -4,8 +4,8 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class carts extends Model {
     static associate(models) {
-      this.belongsTo(models.users, { foreignKey: 'userId', onDelete: 'CASCADE' });
-      this.hasMany(models.cartProducts, { foreignKey: 'cartId', onDelete: 'CASCADE' });
+      this.belongsTo(models.users, { foreignKey: 'userId' });
+      this.belongsTo(models.products, { foreignKey: 'productId' });
     }
   }
 
@@ -14,20 +14,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    totalPrice: {
-      type: DataTypes.FLOAT,
+    productId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue:true,
     },
-    status: {
-      type: DataTypes.BOOLEAN,
+    quantity: {
+      type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: true,
     },
   }, {
     sequelize,
     modelName: 'carts',
-    tableName: 'carts',
     timestamps: true,
   });
 

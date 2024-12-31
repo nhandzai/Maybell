@@ -1,7 +1,7 @@
 <section class="container mx-auto flex-grow max-w-[1200px] border-b py-5 lg:flex lg:flex-row lg:py-10">
   <!-- Mobile cart table -->
   <section class="container mx-auto my-3 flex w-full flex-col gap-3 px-4 md:hidden">
-    <% products.cartProducts.forEach(cart=> { %>
+    <% products.cartItems.forEach(cart=> { %>
       <div class="flex w-full border px-4 py-4" id="cart-item-<%= cart.id %>">
         <img class="self-start object-contain" width="90px" src="<%= cart.product.productImages[0].image %>"
           alt="<%= cart.product.name %> image" />
@@ -17,7 +17,7 @@
           </div>
           <p class="text-sm text-gray-400">sale OFF: <%= cart.product.promotion %> %</p>
           <p class="py-3 text-xl font-bold text-violet-900" id="cart-total-price-<%= cart.id %>">$<%=
-              cart.product.realPrice * cart.quantity %>
+              cart.totalPrice %>
           </p>
           <div class="mt-2 flex w-full items-center justify-between">
             <div class="flex items-center justify-center">
@@ -62,7 +62,7 @@
       </thead>
       <tbody>
         <!-- 1 -->
-        <% products.cartProducts.forEach(cart=> { %>
+        <% products.cartItems.forEach(cart=> { %>
           <tr class="h-[100px] border-b" id="d-cart-item-<%= cart.id %>">
             <td class="align-middle">
               <div class="flex">
@@ -94,8 +94,7 @@
                 </button>
               </div>
             </td>
-            <td class="mx-auto text-center" id="d-cart-total-price-<%= cart.id %>">&#36;<%= cart.product.realPrice *
-                cart.quantity %>
+            <td class="mx-auto text-center" id="d-cart-total-price-<%= cart.id %>">&#36;<%= cart.totalPrice %>
             </td>
             <td class="align-middle">
               <svg onclick="updateCart('delete', '<%= cart.id %>')" xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +121,7 @@
         <div class="flex justify-between py-5">
           <p>SubTotal</p>
           <p id="cart-stotal-price-summary">
-            <%= products.totalPrice %>
+            <%= products.totalCartPrice %>
           </p>
         </div>
         <div class="flex justify-between border-b py-5">
@@ -132,7 +131,7 @@
         <div class="flex justify-between py-5">
           <p>Total</p>
           <p id="cart-total-price-summary">
-            <%= products.totalPrice %>
+            <%= products.totalCartPrice %>
           </p>
         </div>
         <a href="/checkout-address">
@@ -146,7 +145,6 @@
 
 </section>
 <script>
-
   const updateCart = async (action, productCartId) => {
     const response = await fetch('api/update-cart', {
       method: 'POST',
@@ -157,10 +155,8 @@
     });
     const data = await response.json();
 
-  
     if (data.success) {
       if (action === 'delete') {
-      
         removeProductFromPage(productCartId);
       } else {
         updateCartPage(data.cart);
@@ -170,51 +166,54 @@
     }
   };
 
- 
   const removeProductFromPage = (productCartId) => {
-  
     const cartItemElement = document.querySelector(`#cart-item-${productCartId}`);
     if (cartItemElement) {
       cartItemElement.remove();
     }
-
 
     const cartItemTableElement = document.querySelector(`#d-cart-item-${productCartId}`);
     if (cartItemTableElement) {
       cartItemTableElement.remove();
     }
 
-  
     updateCartSummary();
   };
 
-  
   const updateCartPage = (cart) => {
- 
-    cart.cartProducts.forEach((cartItem, index) => {
+    // Cập nhật các sản phẩm trong giỏ hàng
+    cart.cartItems.forEach((cartItem) => {
       const quantityElement = document.querySelector(`#cart-quantity-${cartItem.id}`);
-      quantityElement.textContent = cartItem.quantity;
+      if (quantityElement) {
+        quantityElement.textContent = cartItem.quantity;
+      }
 
-      const d_quantitiElement = document.querySelector(`#d-cart-quantity-${cartItem.id}`);
-      d_quantitiElement.textContent = cartItem.quantity;
+      const d_quantityElement = document.querySelector(`#d-cart-quantity-${cartItem.id}`);
+      if (d_quantityElement) {
+        d_quantityElement.textContent = cartItem.quantity;
+      }
 
       const totalPriceElement = document.querySelector(`#cart-total-price-${cartItem.id}`);
-      totalPriceElement.textContent = `$${(cartItem.product.realPrice * cartItem.quantity).toFixed(2)}`;
+      if (totalPriceElement) {
+        totalPriceElement.textContent = `$${(cartItem.totalPrice).toFixed(2)}`; 
+      }
 
       const d_totalPriceElement = document.querySelector(`#d-cart-total-price-${cartItem.id}`);
-      d_totalPriceElement.textContent = `$${(cartItem.product.realPrice * cartItem.quantity).toFixed(2)}`;
-
+      if (d_totalPriceElement) {
+        d_totalPriceElement.textContent = `$${(cartItem.totalPrice).toFixed(2)}`;
+      }
     });
 
- 
+    // Cập nhật tổng giá trị của giỏ hàng
     const totalPriceSummaryElement = document.querySelector('#cart-total-price-summary');
-    totalPriceSummaryElement.textContent = `$${cart.totalPrice}`;
+    if (totalPriceSummaryElement) {
+      totalPriceSummaryElement.textContent = `$${cart.totalCartPrice.toFixed(2)}`; // Sử dụng totalCartPrice đã tính toán
+    }
+
     const s_totalPriceSummaryElement = document.querySelector('#cart-stotal-price-summary');
-    s_totalPriceSummaryElement.textContent = `$${cart.totalPrice}`;
-
-
-
+    if (s_totalPriceSummaryElement) {
+      s_totalPriceSummaryElement.textContent = `$${cart.totalCartPrice.toFixed(2)}`;
+    }
   };
-
 
 </script>
