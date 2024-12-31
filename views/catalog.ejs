@@ -149,12 +149,69 @@
 
 
     <section id="product" class="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-5 pb-10 lg:grid-cols-2">
-      
+      <% products.forEach(product=> { %>
+        <div class="flex flex-wrap">
+          <div class="flex flex-col">
+            <div class="relative flex">
+              <img src="<%= product.productImages[0].image %>" alt="<%= product.name %> image" />
+
+              <div
+                class="absolute flex h-full w-full items-center justify-center gap-3 opacity-0 duration-150 hover:opacity-100">
+                <a href="/product?id=<%= product.id %>"
+                  class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-amber-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="h-4 w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </a>
+              </div>
+
+              <div class="absolute right-1 mt-3 flex items-center justify-center bg-amber-400">
+                <p class="px-2 py-2 text-sm">&minus; <%= product.promotion %>&percnt; OFF</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="mt-2">
+                <%= product.name %>
+              </p>
+              <p class="font-medium text-violet-900">
+                $<%= product.realPrice %>
+                  <span class="text-sm text-gray-500 line-through">
+                    $<%= product.price %>
+                  </span>
+              </p>
+              <div>
+                <form id="addToCartForm-${product.id}" action="/api/add-to-cart" method="post">
+                  <div>
+                    <button class="my-5 h-10 w-full bg-violet-900 text-white" type="submit">
+                      Add to cart
+                    </button>
+                    <input name="id" value="<%= product.id %>" hidden />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
     </section>
 
     <div id="pagination" class="flex justify-center my-5 gap-2">
       <div id="page" class="flex gap-2 ml-4">
-        
+        <div id="paginationContainer">
+          <% for (let i = 1; i <= totalPage; i++) { %>
+              <button 
+                  class="px-4 py-2 border rounded transition-colors page-btn <% if (i === parseInt(pageCount)) { %>bg-blue-500 text-white<% } %>" 
+                  value="<%= i %>" 
+                  onclick="updatePage(event)">
+                  <%= i %>
+              </button>
+          <% } %>
+      </div>
+      
+
       </div>
     </div>
 </section>

@@ -10,7 +10,7 @@ module.exports = (passport) => {
      
                 const user = await users.findOne({ where: { email } });
                 if (!user) {
-                    return done(null, false, { message: 'User not found.' });
+                    return done(null, false, { message: 'Invalid credentials.' });
                 }
 
 
