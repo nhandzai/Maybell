@@ -1,6 +1,7 @@
 
 const userServices = require('./users-service');
 const passport = require('passport');
+const { users } = require('../../library/models');
 
 const getSignUp = (req, res) => {
     res.render('sign-up', { title: 'Sign Up' });
@@ -9,20 +10,27 @@ const getLogin = (req, res) => {
     res.render('log-in', { title: 'Log in' });
 }
 
-const createUser = async (req, res) => {
-    const { fullName, email, password, country, city  } = req.body;
+const createUser = (req, res, next) => {
+    passport.authenticate('register', (err, user, info) => {
+        if (err) {
+            return res.status(500).json({ message: 'Server error during registration', error: err });
+        }
+        if (!user) {
+            return res.status(400).json({ message: info.message });
+        }
 
-    try {
-        const user = await userServices.registerUser(fullName, email, password, country, city);
-        res.status(201).json({ message: 'User registered successfully.', user });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+        res.status(201).json({
+            message: 'Registration successful. A verification email has been sent. Please verify your email.',
+            user: { email: user.email },
+        });
+    })(req, res, next);
 };
 
+
+
 const authenticateUser = async (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
-       
+    passport.authenticate('login', (err, user, info) => {
+
         if (err) {
             return res.status(500).json({ message: 'Server error during authentication', error: err });
         }
@@ -48,9 +56,60 @@ const getLogout = (req, res) => {
         res.redirect('/log-in');
     });
 };
+const verifyEmail = async (req, res) => {
+    const { token } = req.query;
+    if (!req.session.token || req.session.token !== token) {
+        return res.status(400).send('Invalid or expired token.');
+    }
+
+    try {
+        const user = await users.findOne({ where: { id: req.session.userId } });
+        if (!user) {
+            return res.status(400).send('Invalid or expired token.');
+        }
+        user.isVerified = true;
+        await user.save();
+        return res.status(200).send('Email verified successfully.');
+    }
+    catch (error) {
+        return res.status(500).send('Server error.');
+    }
+}
+const handleGoogleCallback = async (req, res, next) => {
+    passport.authenticate('google', async (err, user, info) => {
+        if (err) {
+            req.flash('error', 'Error during Google authentication: ' + err.message);
+            return res.redirect('/log-in');
+        }
+        if (!user) {
+            req.flash('error', info.message);
+            return res.redirect('/log-in');
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                req.flash('error', 'Login failed.');
+                return res.redirect('/log-in');
+            }
+
+            
+            const action = req.query.state;
+            if (action === 'register') {
+                req.flash('success', 'Registration successful! Please verify your email.');
+            } else if (action === 'login') {
+                req.flash('success', 'Login successful!');
+            }
+            return res.redirect('/');
+        });
+    })(req, res, next);
+};
+
+
+
+
 
 
 module.exports = {
-    createUser, getSignUp, getLogin, authenticateUser, getLogout
+    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback
 };
 

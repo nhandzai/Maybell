@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 // Controllers
 const homeController = require('../components/home/home-controller');
@@ -43,7 +44,29 @@ router.get('/manage-address', isAuthenticated, accountPageController.getManageAd
 
 router.get('/change-password', isAuthenticated, accountPageController.getChangePassword);
 
-router.get('/cart',isAuthenticated,cartController.getCartPage);
+router.get('/cart', isAuthenticated, cartController.getCartPage);
+
+
+
+router.get('/google-login', passport.authenticate('google', { 
+    scope: ['profile', 'email'], 
+    prompt: 'select_account',
+    state: 'login', 
+}));
+
+// Đăng ký với Google
+router.get('/google-register', passport.authenticate('google', { 
+    scope: ['profile', 'email'], 
+    prompt: 'select_account',
+    state: 'register',
+}));
+
+// Callback
+
+router.get('/google/callback', userController.handleGoogleCallback);
+router.get('/auth/verify-email', userController.verifyEmail);
+
+
 
 
 module.exports = router;

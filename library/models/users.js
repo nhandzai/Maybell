@@ -23,20 +23,20 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,  // Password có thể là NULL
     },
     isAdmin: {
       defaultValue: false,
       type: DataTypes.BOOLEAN,
-      allowNull: true,
+      allowNull: false,
     },
     country: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     phone: {
       type: DataTypes.STRING,
@@ -49,6 +49,18 @@ module.exports = (sequelize, DataTypes) => {
     bio: {
       type: DataTypes.TEXT,
       allowNull: true,  
+    },
+    googleId: {  // Thêm trường googleId
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    isVerified: {  // Thêm trường isVerified
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    avatar: {  // Thêm trường avatar (URL ảnh)
+      type: DataTypes.STRING,
+      allowNull: true,
     }
   }, {
     sequelize,

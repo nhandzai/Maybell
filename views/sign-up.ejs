@@ -190,7 +190,8 @@ function validateEmail(inputElement) {
         const data = await response.json();
 
         if (response.ok) {
-          alert('Registration successful. Please log in.');
+          console.log(data);
+          alert( data.message || 'Registration successful. Please log in to continue.' );
           window.location.href = '/log-in'; 
         } else {
           document.getElementById('emailError').textContent = data.message || 'Registration failed.';

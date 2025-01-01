@@ -7,6 +7,11 @@ let isClickNum = false;
 toggleButton.addEventListener("click", () => {
     sidebar.classList.toggle("hidden");
 });
+window.addEventListener('popstate', () => {
+    console.log('History state changed!');
+    updateQueryString();
+});
+
 
 document.getElementById("catalog-form").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -19,7 +24,7 @@ function updatePage(event) {
     isClickNum = true;
     urlParams.set("page", pageNumber);
     window.history.pushState({}, "", `${window.location.pathname}?${urlParams.toString()}`);
-
+    
     updateQueryString();
 }
 
@@ -53,14 +58,16 @@ function updateQueryString() {
     }
     // Preserve the page number
     const pageNumber = urlParams.get("page") || 1; 
+    
 
     if (isClickNum === true) {
         queryParams.push(`page=${pageNumber}`);
-        isClickNum = false;
+        
     } else {
         queryParams.push(`page=1`);
     }
     window.history.pushState({}, "", `${window.location.pathname}?${queryParams.join("&")}`);
+    isClickNum = false;
 
 
     fetch(`/api/products?${queryParams.join("&")}`, {
@@ -166,10 +173,9 @@ function updateQueryString() {
 
 window.onload = function () {
     preserveCheckboxState();
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.toString()) {
-        isClickNum = true;
-    }
+   
+        isClickNum = false;
+    
 };
 
 function preserveCheckboxState() {
@@ -189,6 +195,9 @@ function preserveCheckboxState() {
         if (checkbox) {
             checkbox.checked = true;
         }
+        else {
+            checkbox.checked = false;
+        }
     });
 
     const brandFilters = urlParams.getAll("qfBrand");
@@ -197,6 +206,9 @@ function preserveCheckboxState() {
         if (checkbox) {
             checkbox.checked = true;
         }
+        else {
+            checkbox.checked = false;
+        }
     });
 
     const sizeFilters = urlParams.getAll("qfSize");
@@ -204,6 +216,9 @@ function preserveCheckboxState() {
         const checkbox = document.getElementById(`size:${size}`);
         if (checkbox) {
             checkbox.checked = true;
+        }
+        else {
+            checkbox.checked = false;
         }
     });
 
