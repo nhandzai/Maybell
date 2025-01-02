@@ -9,6 +9,9 @@ const getSignUp = (req, res) => {
 const getLogin = (req, res) => {
     res.render('log-in', { title: 'Log in' });
 }
+const getForgotPassword = (req, res) => {
+    res.render('forgot-password', {title: 'Forgot password' })
+}
 
 const createUser = (req, res, next) => {
     passport.authenticate('register', (err, user, info) => {
@@ -110,6 +113,6 @@ const handleGoogleCallback = async (req, res, next) => {
 
 
 module.exports = {
-    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback
+    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback, getForgotPassword
 };
 

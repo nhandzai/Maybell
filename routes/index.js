@@ -12,6 +12,7 @@ const userController = require('../components/users/users-controller');
 const searchController = require('../components/search/search-controller');
 const accountPageController = require('../components/account-page/account-page-controller')
 const cartController = require('../components/cart/cart-controller')
+const checkoutController = require('../components/checkout/checkout-controller')
 
 //middleware
 const { isAuthenticated } = require('../components/middleware/middleware');
@@ -32,6 +33,8 @@ router.get('/sign-up', userController.getSignUp);
 
 router.get('/log-in', userController.getLogin);
 
+router.get('/forgot-password',userController.getForgotPassword)
+
 router.get('/search', searchController.getSearch);
 
 router.get('/log-out', userController.getLogout);
@@ -46,6 +49,7 @@ router.get('/change-password', isAuthenticated, accountPageController.getChangeP
 
 router.get('/cart', isAuthenticated, cartController.getCartPage);
 
+router.get('/checkout', /*isAuthenticated,*/ checkoutController.getCheckoutPage);
 
 
 router.get('/google-login', passport.authenticate('google', { 
