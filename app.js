@@ -11,6 +11,9 @@ var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/api.js');
 var connectDB = require('./config/connectDB.js');
 const passport = require('passport');
+const redisClient = require('./components/redis/redis.js');
+const {RedisStore} = require("connect-redis")
+
 const passportConfig = require('./components/passport/passport.js');
 var app = express();
 const flash = require('connect-flash');
@@ -30,10 +33,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
+let redisStore = new RedisStore({
+  client: redisClient,
+
+})
 
 app.use(session({
+  store: redisStore,
   secret: process.env.SECRET_KEY,
-
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }

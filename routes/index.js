@@ -33,7 +33,7 @@ router.get('/sign-up', userController.getSignUp);
 
 router.get('/log-in', userController.getLogin);
 
-//router.get('/forgot-password',userController.getForgotPassword)
+router.get('/forgot-password',userController.getForgotPassword)
 
 router.get('/search', searchController.getSearch);
 
@@ -49,7 +49,7 @@ router.get('/change-password', isAuthenticated, accountPageController.getChangeP
 
 router.get('/my-order-history', /*isAuthenticated,*/ accountPageController.getMyOrderHistory);
 
-router.get('/cart', isAuthenticated, cartController.getCartPage);
+router.get('/cart', cartController.getCartPage);
 
 router.get('/checkout', /*isAuthenticated,*/ checkoutController.getCheckoutPage);
 

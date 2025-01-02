@@ -1,46 +1,63 @@
-const { renderCartPage } = require("./cart-view")
-const { addProduct, fetchCartProducts, updateCartProduct } = require("./cart-model")
+
+const { addProduct, fetchCartProducts, updateCartProduct,mergeCart } = require("./cart-model");
+const { renderCartPage } = require("./cart-view");
+
+// Get Cart Page
 const getCartPage = async (req, res) => {
-    const userId = req.user.id;
-    const products = await fetchCartProducts(userId);
-    console.log("products",products);
-    renderCartPage(req, res, products);
+    const userId = req.user?.id;
+
+    const sessionKey = `cart:${req.sessionID}`;
+    let products = [];
+
+    try {
+
+        products = await fetchCartProducts(userId, sessionKey);
+
+        console.log("products", products);
+
+        renderCartPage(req, res, products);
+    } catch (error) {
+        console.error('Error fetching cart page:', error);
+        res.status(500).json({ message: 'An error occurred while fetching the cart page.' });
+    }
 };
 
+// Add Product to Cart
 async function addToCart(req, res) {
     try {
         const { quantity, id } = req.body;
         const quantityValue = parseInt(quantity) || 1;
-        const userId = req.user.id;
         const productId = id;
-        console.log("productId",productId);
-
-        addProduct(productId, quantityValue, userId);
-
-        res.json({ message: "Product added to cart successfully!" });
+        const sessionKey = `cart:${req.sessionID}`;
+        const userId = req.user?.id;
+        await addProduct(productId, quantityValue, userId, sessionKey);
+        console.log("ss",sessionKey);
+        return res.json({ message: "Product added to cart successfully!" });
+        
     } catch (error) {
-        res.json({ message: "An error occurred while adding the product to the cart." });
+        console.error('Error adding product to cart:', error);
+        return res.status(500).json({ message: "An error occurred while adding the product to the cart." });
     }
 }
+
+// Update Cart
 async function updateCart(req, res) {
     const { action, productCartId } = req.body;
-    const userId = req.user.id;
+    const userId = req.user ? req.user.id : null;
+    const sessionKey = `cart:${req.sessionID}`;
 
     try {
-      
-        const result = await updateCartProduct(action, productCartId, userId);
-
-      
-        if (!result.success) {
-            return res.status(400).json({ success: false, message: result.message });
+        let result;
+            result = await updateCartProduct(action, productCartId, userId, sessionKey);
+        if (!result.cartItems) {
+            return res.status(400).json({ success: false, message: "Product not found in the cart." });
         }
 
-      
         return res.json({
             success: true,
             cart: {
                 cartItems: result.cartItems,
-                totalCartPrice: result.totalCartPrice
+                totalCartPrice: result.totalCartPrice || 0
             }
         });
     } catch (error) {
@@ -49,6 +66,11 @@ async function updateCart(req, res) {
     }
 }
 
+
+
 module.exports = {
-    getCartPage, addToCart,updateCart
+    getCartPage,
+    addToCart,
+    updateCart
+
 };
