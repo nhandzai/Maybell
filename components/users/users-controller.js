@@ -109,22 +109,26 @@ const handleGoogleCallback = async (req, res, next) => {
             req.flash('error', info.message);
             return res.redirect('/log-in');
         }
+        const action = req.query.state;
+        if (action === 'register') {
+            req.flash('success', 'Registration successful! Please verify your email.');
+            return res.redirect('/log-in');
 
-        req.logIn(user, (err) => {
-            if (err) {
-                req.flash('error', 'Login failed.');
-                return res.redirect('/log-in');
+        } else
+            if (action === 'login') {
+
+
+                req.logIn(user, (err) => {
+                    if (err) {
+                        req.flash('error', 'Login failed.');
+                        return res.redirect('/log-in');
+                    }
+
+
+                    req.flash('success', 'Login successful!');
+                    return res.redirect('/');
+                });
             }
-
-
-            const action = req.query.state;
-            if (action === 'register') {
-                req.flash('success', 'Registration successful! Please verify your email.');
-            } else if (action === 'login') {
-                req.flash('success', 'Login successful!');
-            }
-            return res.redirect('/');
-        });
     })(req, res, next);
 };
 
