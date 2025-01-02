@@ -1,11 +1,16 @@
-async function renderCatalogPage(res, products, categories, brands, sizes,pageCount) {
+const products = require("../../library/models/products");
+
+async function renderCatalogPage(res, categories, brands, sizes, LProduct,page,totalPage) {
   res.render('catalog', {
     title: 'Catalog',
-    products: products,
+  
     categories: categories,
     brands: brands,
     sizes: sizes,
-    pageCount: pageCount
+    products: LProduct,
+    pageCount: page,
+    totalPage: totalPage,
+  
 
   });
 }

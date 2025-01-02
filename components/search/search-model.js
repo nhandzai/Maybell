@@ -1,5 +1,5 @@
 const db = require('../../library/models');
-const { searchProducts } = require('../../library/search');
+const { searchFilterProducts} = require('../../library/search');
 
 async function fetchAllProducts() {
   return await db.products.findAll();
@@ -16,11 +16,11 @@ async function fetchAllSizes() {
   const sizes = await db.sizes.findAll();
   return sizes;
 }
-async function fetchProducts(query,limit,page) {
+async function fetchProducts(query) {
   if (!query) {
     throw new Error('Search query is required.');
   }
-  const products = await searchProducts(query,limit,page); 
+  const products = await searchFilterProducts(query); 
   return products;
 }
 

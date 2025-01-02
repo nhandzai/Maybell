@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 // Controllers
 const homeController = require('../components/home/home-controller');
@@ -11,6 +12,7 @@ const userController = require('../components/users/users-controller');
 const searchController = require('../components/search/search-controller');
 const accountPageController = require('../components/account-page/account-page-controller')
 const cartController = require('../components/cart/cart-controller')
+const checkoutController = require('../components/checkout/checkout-controller')
 
 //middleware
 const { isAuthenticated } = require('../components/middleware/middleware');
@@ -31,6 +33,8 @@ router.get('/sign-up', userController.getSignUp);
 
 router.get('/log-in', userController.getLogin);
 
+router.get('/forgot-password',userController.getForgotPassword)
+
 router.get('/search', searchController.getSearch);
 
 router.get('/log-out', userController.getLogout);
@@ -43,7 +47,34 @@ router.get('/manage-address', isAuthenticated, accountPageController.getManageAd
 
 router.get('/change-password', isAuthenticated, accountPageController.getChangePassword);
 
-router.get('/cart',cartController.getCartPage);
+router.get('/my-order-history', /*isAuthenticated,*/ accountPageController.getMyOrderHistory);
+
+router.get('/order-overview', /*isAuthenticated,*/ accountPageController.getOrderOverview);
+
+router.get('/cart', cartController.getCartPage);
+
+router.get('/checkout', /*isAuthenticated,*/ checkoutController.getCheckoutPage);
+
+
+router.get('/google-login', passport.authenticate('google', { 
+    scope: ['profile', 'email'], 
+    prompt: 'select_account',
+    state: 'login', 
+}));
+
+// Đăng ký với Google
+router.get('/google-register', passport.authenticate('google', { 
+    scope: ['profile', 'email'], 
+    prompt: 'select_account',
+    state: 'register',
+}));
+
+// Callback
+
+router.get('/google/callback', userController.handleGoogleCallback);
+router.get('/auth/verify-email', userController.verifyEmail);
+
+
 
 
 module.exports = router;

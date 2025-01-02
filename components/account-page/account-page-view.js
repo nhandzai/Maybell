@@ -23,6 +23,18 @@ async function renderChangePassword(req, res) {
   });
 };
 
+async function renderMyOrderHistory(req, res) {
+  res.render('my-order-history', {
+    title: 'My order history',
+  });
+};
+
+async function renderOrderOverview(req, res) {
+  res.render('order-overview', {
+    title: 'Order overview',
+  });
+};
+
 module.exports = {
-  renderAccountPage, renderProfileInformation, renderManageAddress, renderChangePassword
+  renderAccountPage, renderProfileInformation, renderManageAddress, renderChangePassword, renderMyOrderHistory, renderOrderOverview
 };

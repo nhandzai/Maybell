@@ -2,15 +2,15 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class carts extends Model {
+  class orderProducts extends Model {
     static associate(models) {
-      this.belongsTo(models.users, { foreignKey: 'userId' });
+      this.belongsTo(models.orders, { foreignKey: 'orderId' });
       this.belongsTo(models.products, { foreignKey: 'productId' });
     }
   }
 
-  carts.init({
-    userId: {
+  orderProducts.init({
+    orderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {
     sequelize,
-    modelName: 'carts',
+    modelName: 'orderProducts',
     timestamps: true,
   });
 
-  return carts;
+  return orderProducts;
 };

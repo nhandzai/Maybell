@@ -11,8 +11,13 @@ var usersRouter = require('./routes/users');
 var registerRouter = require('./routes/api.js');
 var connectDB = require('./config/connectDB.js');
 const passport = require('passport');
+const redisClient = require('./components/redis/redis.js');
+const {RedisStore} = require("connect-redis")
+
 const passportConfig = require('./components/passport/passport.js');
 var app = express();
+const flash = require('connect-flash');
+
 connectDB();
 
 // view engine setup
@@ -20,7 +25,7 @@ connectDB();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-
+app.use(flash());
 app.set('layout', 'index');
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,10 +33,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
+let redisStore = new RedisStore({
+  client: redisClient,
+
+})
 
 app.use(session({
+  store: redisStore,
   secret: process.env.SECRET_KEY,
-
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -41,6 +50,12 @@ app.use(passport.session());
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.isAuthenticated();
   res.locals.user= req.user;
+  next();
+});
+app.use((req, res, next) => {
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  res.locals.message = req.flash('message');
   next();
 });
 

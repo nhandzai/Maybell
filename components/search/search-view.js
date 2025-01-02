@@ -1,11 +1,13 @@
-async function renderSearchPage(res, LProduct, categories, brands, sizes, pageCount) {
+async function renderSearchPage(res, categories, brands, sizes, LProduct,page,totalPage) {
   res.render('catalog', {
     title: 'Search',
-    products: LProduct,
     categories: categories,
     brands: brands,
     sizes: sizes,
-    pageCount: pageCount,
+    products: LProduct,
+    pageCount: page,
+    totalPage: totalPage,
+ 
   });
 }
 module.exports = { renderSearchPage };

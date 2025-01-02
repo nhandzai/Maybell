@@ -68,9 +68,9 @@
     <p class="text-center text-gray-500">OR SIGN UP WITH</p>
 
     <div class="my-5 flex gap-2">
-      <button class="w-1/2 bg-blue-800 py-2 text-white">FACEBOOK</button>
-      <button class="w-1/2 bg-orange-500 py-2 text-white">GOOGLE</button>
+      <button class="w-full bg-orange-500 py-2 text-white" onclick="window.location.href='/google-register'">GOOGLE</button>
     </div>
+    
 
     <p class="text-center">
       Already have an account?
@@ -84,11 +84,11 @@
   function validatePassword(inputElement) {
   const password = inputElement.value.trim();
   const passwordError = document.getElementById('passwordError');
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex = /^\d{8}$/;
 
   if (!password || !passwordRegex.test(password)) {
     passwordError.textContent =
-      'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.';
+      'Password must be at least 8 characters long';
     passwordError.classList.remove('hidden');
     inputElement.classList.add('border-red-500');
   } else {
@@ -132,7 +132,7 @@ function validateEmail(inputElement) {
 
       // Regular expressions for validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      const passwordRegex = /^\d{8}$/;
 
       // Validate form fields
       if (!fullName) {
@@ -149,7 +149,7 @@ function validateEmail(inputElement) {
 
       if (!password || !passwordRegex.test(password)) {
         document.getElementById('passwordError').textContent =
-          'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.';
+          'Password must be at least 8 characters long';
         document.getElementById('passwordError').classList.remove('hidden');
         hasError = true;
       }
@@ -190,7 +190,8 @@ function validateEmail(inputElement) {
         const data = await response.json();
 
         if (response.ok) {
-          alert('Registration successful. Please log in.');
+          console.log(data);
+          alert( data.message || 'Registration successful. Please log in to continue.' );
           window.location.href = '/log-in'; 
         } else {
           document.getElementById('emailError').textContent = data.message || 'Registration failed.';

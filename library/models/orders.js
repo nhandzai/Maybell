@@ -4,8 +4,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class orders extends Model {
     static associate(models) {
-      this.belongsTo(models.users, { foreignKey: 'userId', onDelete: 'CASCADE' });
-      this.belongsTo(models.carts, { foreignKey: 'cartId', onDelete: 'SET NULL' });
+      this.belongsTo(models.users, { foreignKey: 'userId' });
+      this.belongsTo(models.paymentMethods, { foreignKey: 'paymentMethodId' });
+      this.hasMany(models.orderProducts, { foreignKey: 'orderId' });
     }
   }
 
@@ -13,22 +14,20 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onDelete: 'CASCADE',
     },
-    cartId: {
+    paymentMethodId: {
       type: DataTypes.INTEGER,
-      references: {
-        model: 'carts',
-        key: 'id',
-      },
-      onDelete: 'SET NULL',
       allowNull: true,
     },
-    totalPrice: DataTypes.FLOAT,
+    createTime: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    status: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
   }, {
     sequelize,
     modelName: 'orders',

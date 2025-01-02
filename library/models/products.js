@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasMany(models.productImages, { foreignKey: 'productId', onDelete: 'CASCADE' });
       this.hasMany(models.reviews, { foreignKey: 'productId', onDelete: 'CASCADE' });
+  
       this.hasMany(models.carts, { foreignKey: 'productId', onDelete: 'CASCADE' });
       this.hasMany(models.wishlists, { foreignKey: 'productId', onDelete: 'CASCADE' });
       this.belongsTo(models.categories, { foreignKey: 'categoryId', onDelete: 'SET NULL' });
