@@ -47,6 +47,8 @@ router.get('/manage-address', isAuthenticated, accountPageController.getManageAd
 
 router.get('/change-password', isAuthenticated, accountPageController.getChangePassword);
 
+router.get('/my-order-history', /*isAuthenticated,*/ accountPageController.getMyOrderHistory);
+
 router.get('/cart', isAuthenticated, cartController.getCartPage);
 
 router.get('/checkout', /*isAuthenticated,*/ checkoutController.getCheckoutPage);
