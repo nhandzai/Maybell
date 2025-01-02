@@ -33,7 +33,7 @@ router.get('/sign-up', userController.getSignUp);
 
 router.get('/log-in', userController.getLogin);
 
-router.get('/forgot-password',userController.getForgotPassword)
+//router.get('/forgot-password',userController.getForgotPassword)
 
 router.get('/search', searchController.getSearch);
 

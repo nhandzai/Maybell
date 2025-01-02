@@ -2,15 +2,13 @@
 const userServices = require('./users-service');
 const passport = require('passport');
 const { users } = require('../../library/models');
+const client = require('../redis/redis.js');
 
 const getSignUp = (req, res) => {
     res.render('sign-up', { title: 'Sign Up' });
 };
 const getLogin = (req, res) => {
     res.render('log-in', { title: 'Log in' });
-}
-const getForgotPassword = (req, res) => {
-    res.render('forgot-password', {title: 'Forgot password' })
 }
 
 const createUser = (req, res, next) => {
@@ -61,23 +59,36 @@ const getLogout = (req, res) => {
 };
 const verifyEmail = async (req, res) => {
     const { token } = req.query;
-    if (!req.session.token || req.session.token !== token) {
-        return res.status(400).send('Invalid or expired token.');
-    }
 
+    // Kiểm tra token từ Redis
     try {
-        const user = await users.findOne({ where: { id: req.session.userId } });
-        if (!user) {
-            return res.status(400).send('Invalid or expired token.');
+        const userId = await client.get(`verify:${token}`);
+        
+        if (!userId) {
+            req.flash('error', 'Invalid or expired token.');
+            return res.redirect('/');
         }
+
+        // Tìm user từ database dựa trên userId
+        const user = await users.findOne({ where: { id: userId } });
+        if (!user) {
+            req.flash('error', 'Invalid or expired token.');
+            return res.redirect('/');
+        }
+
         user.isVerified = true;
         await user.save();
-        return res.status(200).send('Email verified successfully.');
-    }
-    catch (error) {
+
+        await client.del(`verify:${token}`);
+        req.flash('success', 'Email verified successfully.');
+        return res.redirect('/');
+        
+    } catch (error) {
+        console.error('Error verifying email:', error);
         return res.status(500).send('Server error.');
     }
-}
+};
+
 const handleGoogleCallback = async (req, res, next) => {
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
@@ -113,6 +124,6 @@ const handleGoogleCallback = async (req, res, next) => {
 
 
 module.exports = {
-    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback, getForgotPassword
+    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback
 };
 
