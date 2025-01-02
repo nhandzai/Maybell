@@ -1762,6 +1762,10 @@ video {
     display: flex;
   }
 
+  .md\:table {
+    display: table;
+  }
+
   .md\:grid {
     display: grid;
   }

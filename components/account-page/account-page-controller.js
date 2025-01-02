@@ -1,4 +1,4 @@
-const { renderAccountPage, renderProfileInformation, renderManageAddress, renderChangePassword, renderMyOrderHistory } = require("./account-page-view")
+const { renderAccountPage, renderProfileInformation, renderManageAddress, renderChangePassword, renderMyOrderHistory, renderOrderOverview } = require("./account-page-view")
 const { fetchUserById, updateUserAddress, updateUserInfo, updateUserPassword, comparePassword  } = require("./account-page-model")
 const getAccountPage = async (req, res) => {
     const user = await fetchUserById(req.user.id);
@@ -19,6 +19,10 @@ const getChangePassword = (req, res) => {
 
 const getMyOrderHistory = (req, res) => {
     renderMyOrderHistory(req, res);
+};
+
+const getOrderOverview = (req, res) => {
+    renderOrderOverview(req, res);
 };
 
 async function updateInfo(req, res) {
@@ -78,5 +82,5 @@ async function changePassword(req, res) {
 
 
 module.exports = {
-    getAccountPage, getProfileInformation, getManageAddress, getChangePassword, updateInfo, updateAddress, changePassword, getMyOrderHistory
+    getAccountPage, getProfileInformation, getManageAddress, getChangePassword, updateInfo, updateAddress, changePassword, getMyOrderHistory, getOrderOverview
 };  
