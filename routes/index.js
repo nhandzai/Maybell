@@ -53,7 +53,9 @@ router.get('/order-overview', /*isAuthenticated,*/ accountPageController.getOrde
 
 router.get('/cart', cartController.getCartPage);
 
-router.get('/checkout', /*isAuthenticated,*/ checkoutController.getCheckoutPage);
+router.get('/checkout', isAuthenticated, checkoutController.getCheckoutPage);
+
+
 
 
 router.get('/google-login', passport.authenticate('google', { 

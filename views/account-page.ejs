@@ -3,7 +3,7 @@
   <section id="sidebar" class="hidden w-[300px] flex-shrink-0 px-4 lg:block">
     <div class="border-b py-5">
       <div class="flex items-center">
-        <img width="40px" height="40px" class="rounded-full object-cover" src="images/avatar-photo.png"
+        <img width="40px" height="40px" class="rounded-full object-cover" src="<%= user_db.avatar ? user_db.avatar : 'images/avatar-photo.png' %>"
           alt="Red woman portrait" />
         <div class="ml-5">
           <p class="font-bold">
@@ -105,7 +105,7 @@
 
         <div class="px-4">
           <p>
-            <%= user_db.fullName %>
+            <strong>Name:</strong><%= user_db.fullName %>
           </p>
           
           <% if (user_db.email) { %>
@@ -146,12 +146,12 @@
         </div>
 
         <div class="px-4">
-          <p>
-            <%= user_db.fullName %>
-          </p>
-          <p>
-            <%= user_db.city %>, <%= user_db.country %>
-          </p>
+          <strong>Name:</strong> <%= user_db.fullName %>
+          <% if (user_db.city && user_db.country) { %>
+            <p><strong>Location:</strong> <%= user_db.city %>, <%= user_db.country %></p>
+          <% } else { %>
+            <p><strong>Location:</strong> Not updated</p>
+          <% } %>
 
         </div>
       </div>

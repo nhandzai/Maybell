@@ -73,4 +73,5 @@ module.exports = {
     addToCart,
     updateCart
 
+
 };

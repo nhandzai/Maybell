@@ -70,7 +70,7 @@ const getLogout = (req, res) => {
 const verifyEmail = async (req, res) => {
     const { token } = req.query;
 
-    // Kiểm tra token từ Redis
+   
     try {
         const userId = await client.get(`verify:${token}`);
 
@@ -79,7 +79,7 @@ const verifyEmail = async (req, res) => {
             return res.redirect('/');
         }
 
-        // Tìm user từ database dựa trên userId
+      
         const user = await users.findOne({ where: { id: userId } });
         if (!user) {
             req.flash('error', 'Invalid or expired token.');
@@ -131,6 +131,44 @@ const handleGoogleCallback = async (req, res, next) => {
             }
     })(req, res, next);
 };
+const ForgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await userServices.checkEmailExist(email);
+        if (!user) {
+            return res.status(400).json({ message: 'Email not found.' });
+        }
+        const isGoogleUser = await userServices.checkPasswordEmailExist(email);
+        console.log('isGoogleUser', isGoogleUser);
+        if (isGoogleUser) {
+            return res.status(400).json({ message: 'Cannot reset password for Google users.' });
+        }
+        await userServices.sendResetPasswordEmail(email);
+        res.status(200).json({ message: 'An email has been sent to reset your password.' });
+    }
+    catch (error) {
+        console.error('Error verifying email:', error);
+        return res.status(500).send('Server error.');
+    }
+};
+const checkEmailExist = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await userServices.checkEmailExist(email);
+        if (!user) {
+           
+            return res.status(400).json({ success: false, message: 'Email not found.' });
+        }
+        
+        res.status(200).json({ success: true, message: 'Email found.' });
+    }
+    catch (error) {
+        console.error('Error verifying email:', error);
+        return res.status(500).json({ success: false, message: 'Server error.' });
+    }
+};
+
+
 
 
 
@@ -138,6 +176,6 @@ const handleGoogleCallback = async (req, res, next) => {
 
 
 module.exports = {
-    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback, getForgotPassword
+    createUser, getSignUp, getLogin, authenticateUser, getLogout, verifyEmail, handleGoogleCallback, ForgotPassword, getForgotPassword, checkEmailExist
 };
 

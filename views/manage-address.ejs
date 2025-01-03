@@ -9,7 +9,7 @@
           width="40px"
           height="40px"
           class="rounded-full object-cover"
-          src="images/avatar-photo.png"
+          src="<%= user_db.avatar ? user_db.avatar : 'images/avatar-photo.png' %>"
           alt="Red woman portrait"
         />
         <div class="ml-5">
@@ -130,7 +130,7 @@
             width="40px"
             height="40px"
             class="rounded-full object-cover"
-            src="images/avatar-photo.png"
+            src=""<%= user_db.avatar ? user_db.avatar : 'images/avatar-photo.png' %>"
             alt="Red woman portrait"
           />
           <div class="ml-5">
@@ -167,7 +167,7 @@
           type="text"
           name="country"
           id="country"
-          placeholder="Serbia"
+          placeholder="<%= user_db.country ? user_db.country : 'Enter your country' %>"
           required
         />
       </div>
@@ -182,7 +182,7 @@
           type="text"
           name="city"
           id="city"
-          placeholder="Belgrade"
+          placeholder="<%= user_db.city ? user_db.city : 'Enter your city' %>"
           required
         />
       </div>

@@ -5,15 +5,17 @@ async function renderAccountPage(req, res,User) {
   });
 };
 
-async function renderProfileInformation(req, res) {
+async function renderProfileInformation(req, res,User) {
   res.render('profile-information', {
     title: 'Profile Information',
+    user_db: User
   });
 };
 
-async function renderManageAddress(req, res) {
+async function renderManageAddress(req, res,User) {
   res.render('manage-address', {
     title: 'Manage Address',
+    user_db: User
   });
 };
 
@@ -23,15 +25,17 @@ async function renderChangePassword(req, res) {
   });
 };
 
-async function renderMyOrderHistory(req, res) {
+async function renderMyOrderHistory(req, res,Order) {
   res.render('my-order-history', {
     title: 'My order history',
+    orders: Order
   });
 };
 
-async function renderOrderOverview(req, res) {
+async function renderOrderOverview(req, res,Order) {
   res.render('order-overview', {
     title: 'Order overview',
+    orders: Order
   });
 };
 

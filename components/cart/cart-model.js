@@ -39,7 +39,7 @@ async function addProduct(productId, quantity, userId, sessionKey) {
 
 async function fetchCartProducts(userId, sessionKey) {
     try {
-        // Nếu người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
+      
         if (userId) {
             const cartItems = await db.carts.findAll({
                 where: { userId },
