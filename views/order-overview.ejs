@@ -3,7 +3,7 @@
   <section id="sidebar" class="hidden w-[300px] flex-shrink-0 px-4 lg:block">
     <div class="border-b py-5">
       <div class="flex items-center">
-        <img width="40px" height="40px" class="rounded-full object-cover" src="images/avatar-photo.png"
+        <img width="40px" height="40px" class="rounded-full object-cover" src="<%= user_db.avatar ? user_db.avatar : 'images/avatar-photo.png' %>"
           alt="Red woman portrait" />
         <div class="ml-5">
           <p class="font-bold">

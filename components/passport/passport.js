@@ -75,7 +75,7 @@ module.exports = (passport) => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'https://maybell-test.onrender.com/google/callback', 
+                callbackURL: '/google/callback'  ,//'https://maybell-test.onrender.com/google/callback', 
                 passReqToCallback: true,
             },
             async (req, accessToken, refreshToken, profile, done) => {
@@ -131,7 +131,7 @@ module.exports = (passport) => {
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await users.findByPk(id, {
-                attributes: ['id', 'fullName', 'email'],
+                attributes: ['id', 'fullName', 'email','avatar'],
             });
             done(null, user);
         } catch (error) {

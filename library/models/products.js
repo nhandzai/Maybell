@@ -53,6 +53,10 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     stockQuantity: DataTypes.INTEGER,
+    status: {
+      type: DataTypes.TEXT,
+   
+    },
 
     promotion: {
       type: DataTypes.VIRTUAL,
@@ -67,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'products',
   });
+  
 
   return products;
 };

@@ -51,47 +51,53 @@ async function fetchCheckoutProducts(userId) {
         throw error;
     }
 }
-async function handleCheckout(userId, paymentMethodId, address, country, city, phone) {
-    try {
-     
-        const { cartItems, totalCartPrice } = await fetchCheckoutProducts(userId);
+async function handleCheckout(userId, paymentMethodId, address, country, city) {
+    const cartItems = await fetchCheckoutProducts(userId);
 
-        if (cartItems.length === 0) {
-            throw new Error('Cart is empty');
+    if (cartItems.cartItems.length === 0) {
+        return { success: false, message: 'Cart is empty' };
+    }
+
+    for (const item of cartItems.cartItems) {
+        const product = await db.products.findByPk(item.product.id);
+        if (!product) {
+            return { success: false, message: `Product ID ${item.product.id} not found` };
         }
 
-       
-        const newOrder = await db.orders.create({
-            userId,
-            paymentMethodId,
-            status: 'Pending',
-            address,
-            country,
-            city,
-            phone,
-            total: totalCartPrice,
-        });
+        if (product.stockQuantity < item.quantity) {
+            return {
+                success: false,
+                message: `Product "${item.product.name}" is out of stock or does not have enough quantity`,
+            };
+        }
+    }
 
-        const orderProducts = cartItems.map(item => ({
-            orderId: newOrder.id,
+    const order = await db.orders.create({
+        userId,
+        paymentMethodId,
+        address,
+        country,
+        city,
+        total: cartItems.totalCartPrice,
+        status: 'inProcess',
+    });
+
+    for (const item of cartItems.cartItems) {
+        await db.orderProducts.create({
+            orderId: order.id,
             productId: item.product.id,
             quantity: item.quantity,
-        }));
-
-    
-        await db.orderProducts.bulkCreate(orderProducts);
-
-
-        await db.carts.destroy({
-            where: { userId },
         });
 
-        return { orderId: newOrder.id, totalCartPrice };
-    } catch (error) {
-        console.error('Error during checkout:', error);
-        throw error;
+        await db.products.update(
+            { stockQuantity: db.sequelize.literal(`stockQuantity - ${item.quantity}`) },
+            { where: { id: item.product.id } }
+        );
     }
+
+    return { success: true, orderId: order.id, totalCartPrice: cartItems.totalCartPrice };
 }
+
 
 
 

@@ -16,22 +16,24 @@ const getManageAddress = async (req, res) => {
     renderManageAddress(req, res,user);
 };
 
-const getChangePassword = (req, res) => {
-    renderChangePassword(req, res);
+const getChangePassword = async (req, res) => {
+    const user = await fetchUserById(req.user.id);
+    renderChangePassword(req, res,user);
 };
 
 const getMyOrderHistory = async (req, res) => {
     const order = await fetchOrderByUser(req.user.id);
+    const user = await fetchUserById(req.user.id);
  
-    renderMyOrderHistory(req, res,order);
+    renderMyOrderHistory(req, res,order,user);
 };
 
 const getOrderOverview = async (req, res) => {
-    
+    const user = await fetchUserById(req.user.id);
     const orderId = req.query.id;
     const order= await fetchDetailOrder(orderId,req.user.id);
-    console.log('order---', JSON.stringify(order) );
-    renderOrderOverview(req, res,order);
+   
+    renderOrderOverview(req, res,order,user);
 };
 
 async function updateInfo(req, res) {

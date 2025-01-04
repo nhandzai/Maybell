@@ -181,9 +181,12 @@
 
       if (response.ok) {
 
-        //   window.location.href = '/order-confirmation';
+        window.location.href = '/order-overview';
       } else {
-        alert('An error occurred during checkout.');
+        // thong bao messagemessage được gửi về
+        const message = await response.json();
+        alert(message.message);
+        
       }
     } catch (error) {
       console.error('Error:', error);
