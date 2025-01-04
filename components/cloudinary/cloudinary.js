@@ -12,7 +12,7 @@ async function uploadFile(filePath) {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
       transformation: [
-        { width: 564, height: 376, crop: 'fill', gravity: 'auto' },  
+        { width: 520, height: 520, crop: 'fill', gravity: 'auto' },  
       ],
     });
     return result;
