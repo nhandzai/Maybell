@@ -77,15 +77,13 @@
           class="mx-auto ml-5 flex w-full justify-center border-yellow-400 text-sm outline-none file:mr-4 file:bg-amber-400 file:py-2 file:px-4 file:text-sm file:font-semibold" />
       </div>
       <div class="flex w-full flex-col">
-        <label class="flex" for="name">Full Name<span
-            class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
+        <label class="flex" for="name">Full Name</label>
         <input class="w-full border px-4 py-2 lg:w-1/2" type="text" name="fullName" placeholder="<%=user_db.fullName%>" />
       </div>
 
       <!-- Sex -->
       <div class="flex w-full flex-col">
-        <label class="flex" for="sex">Sex<span
-            class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
+        <label class="flex" for="sex">Sex</label>
             <select id="sex" name="sex" class="w-full border px-4 py-2 lg:w-1/2">
               <option value="" <%= !user_db.sex ? 'selected' : '' %>>Select Gender</option> <!-- Chọn "Select Gender" khi giới tính không có -->
               <option value="male" <%= user_db.sex === 'Male' ? 'selected' : '' %>>Male</option>
@@ -95,8 +93,7 @@
       </div>
 
       <div class="flex w-full flex-col">
-        <label class="flex" for="phone">Phone<span
-            class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
+        <label class="flex" for="phone">Phone</label>
         <input class="w-full border px-4 py-2 lg:w-1/2" type="tel" name="phone" placeholder="<%= user_db.phone ? user_db.phone : 'Enter your phone number' %>" />
       </div>
 
