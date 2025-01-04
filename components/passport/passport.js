@@ -75,7 +75,7 @@ module.exports = (passport) => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: '/google/callback'  ,//'https://maybell-test.onrender.com/google/callback', 
+                callbackURL: 'https://maybell-test.onrender.com/google/callback'  ,//'https://maybell-test.onrender.com/google/callback', '/google/callback'
                 passReqToCallback: true,
             },
             async (req, accessToken, refreshToken, profile, done) => {
