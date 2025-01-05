@@ -21,7 +21,7 @@ module.exports = (passport) => {
                 if (!user.isVerified) {
                     return done(null, false, { message: 'Please verify your email first.' });
                 }
-                if (!user.isBan)
+                if (user.isBan)
                     return done(null, false, { message: 'Your account has been banned.' });
 
                 const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -114,7 +114,7 @@ module.exports = (passport) => {
                         if (!user.isVerified) {
                             return done(null, false, { message: 'Please verify your email first.' });
                         }
-                        if (!user.isBan)
+                        if (user.isBan)
                             return done(null, false, { message: 'Your account has been banned.' });
                         return done(null, user);
                     } else {
