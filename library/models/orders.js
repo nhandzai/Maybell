@@ -19,13 +19,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    createTime: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
+    
     status: {
       type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    address: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    country: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    city: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    total: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   }, {

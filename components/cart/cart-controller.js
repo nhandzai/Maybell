@@ -49,9 +49,7 @@ async function updateCart(req, res) {
     try {
         let result;
             result = await updateCartProduct(action, productCartId, userId, sessionKey);
-        if (!result.cartItems) {
-            return res.status(400).json({ success: false, message: "Product not found in the cart." });
-        }
+        
 
         return res.json({
             success: true,
@@ -72,5 +70,6 @@ module.exports = {
     getCartPage,
     addToCart,
     updateCart
+
 
 };

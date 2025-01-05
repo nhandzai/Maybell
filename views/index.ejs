@@ -1,59 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/tailwind-output.css" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/stylesheets/tailwind-output.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
 
-  <link rel="apple-touch-icon" sizes="76x76" href="/images/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
+    <link rel="manifest" href="/images/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="/images/safari-pinned-tab.svg"
+      color="#207891"
+    />
+    <meta name="msapplication-TileColor" content="#ffc40d" />
+    <meta name="theme-color" content="#ffffff" />
 
-  <link rel="manifest" href="/images/site.webmanifest" />
-  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#207891" />
-  <meta name="msapplication-TileColor" content="#ffc40d" />
-  <meta name="theme-color" content="#ffffff" />
+    <style>
+      /* Remove default browser arrows for number inputs */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
-  <style>
-    /* Remove default browser arrows for number inputs */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+      input[type="number"] {
+        -moz-appearance: textfield;
+        /* Firefox */
+        appearance: textfield;
+        /* Modern browsers */
+      }
+    </style>
+  </head>
 
-    input[type="number"] {
-      -moz-appearance: textfield;
-      /* Firefox */
-      appearance: textfield;
-      /* Modern browsers */
-    }
-  </style>
+  <body x-data="{ desktopMenuOpen: false, mobileMenuOpen: false}">
+    <% if (message.length> 0) { %>
+    <script>
+      alert("<%= message[0] %>");
+    </script>
+    <% } %> <% if (error.length> 0) { %>
+    <script>
+      alert("<%= error[0] %>");
+    </script>
+    <% } %> <% if (success.length> 0) { %>
+    <script>
+      alert("<%= success[0] %>");
+    </script>
+    <% } %> <%- include('header') %>
 
-</head>
+    <main><%- body %></main>
 
-<body x-data="{ desktopMenuOpen: false, mobileMenuOpen: false}">
-  <% if (message.length> 0) { %>
-    <script>alert('<%= message[0] %>');</script>
-    <% } %>
-      <% if (error.length> 0) { %>
-        <script>alert('<%= error[0] %>');</script>
-        <% } %>
-          <% if (success.length> 0) { %>
-            <script>alert('<%= success[0] %>');</script>
-            <% } %>
-              <%- include('header') %>
-
-
-                <main>
-                  <%- body %>
-                </main>
-
-                <%- include('footer') %>
-
-                  <script type="module" src="javascripts/script.js"></script>
-</body>
-
+    <%- include('footer') %>
+  </body>
 </html>
+<script type="module" src="javascripts/script.js"></script>

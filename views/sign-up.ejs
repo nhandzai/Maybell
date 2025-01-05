@@ -13,24 +13,14 @@
       <!-- Error message container -->
 
       <label class="mt-3" for="email">Email Address</label>
-      <input 
-        id="email" 
-        class="mt-3 border px-4 py-2" 
-        type="email" 
-        placeholder="user@mail.com" 
-        onblur="validateEmail(this)" 
-      />
-      <div id="emailError" class="text-pink-800 hidden px-3 py-2 mt-2 rounded-md text-sm"></div>      
+      <input id="email" class="mt-3 border px-4 py-2" type="email" placeholder="user@mail.com"
+        onblur="validateEmail(this); checkEmailExistence(this)" />
+      <div id="emailError" class="text-pink-800 hidden px-3 py-2 mt-2 rounded-md text-sm"></div>
       <!-- Error message container -->
 
       <label class="mt-5" for="password">Password</label>
-      <input 
-        id="password" 
-        class="mt-3 border px-4 py-2" 
-        type="password" 
-        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" 
-        onblur="validatePassword(this)" 
-      />
+      <input id="password" class="mt-3 border px-4 py-2" type="password"
+        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;" onblur="validatePassword(this)" />
       <div id="passwordError" class="text-pink-800 hidden px-3 py-2 mt-2 rounded-md text-sm"></div>
       <!-- Error message container -->
 
@@ -68,9 +58,10 @@
     <p class="text-center text-gray-500">OR SIGN UP WITH</p>
 
     <div class="my-5 flex gap-2">
-      <button class="w-full bg-orange-500 py-2 text-white" onclick="window.location.href='/google-register'">GOOGLE</button>
+      <button class="w-full bg-orange-500 py-2 text-white"
+        onclick="window.location.href='/google-register'">GOOGLE</button>
     </div>
-    
+
 
     <p class="text-center">
       Already have an account?
@@ -82,37 +73,37 @@
 
 <script>
   function validatePassword(inputElement) {
-  const password = inputElement.value.trim();
-  const passwordError = document.getElementById('passwordError');
-  const passwordRegex = /^\d{8}$/;
+    const password = inputElement.value.trim();
+    const passwordError = document.getElementById('passwordError');
+    const passwordRegex = /^\d{8}$/;
 
-  if (!password || !passwordRegex.test(password)) {
-    passwordError.textContent =
-      'Password must be at least 8 characters long';
-    passwordError.classList.remove('hidden');
-    inputElement.classList.add('border-red-500');
-  } else {
-    passwordError.textContent = '';
-    passwordError.classList.add('hidden');
-    inputElement.classList.remove('border-red-500');
+    if (!password || !passwordRegex.test(password)) {
+      passwordError.textContent =
+        'Password must be at least 8 characters long';
+      passwordError.classList.remove('hidden');
+      inputElement.classList.add('border-red-500');
+    } else {
+      passwordError.textContent = '';
+      passwordError.classList.add('hidden');
+      inputElement.classList.remove('border-red-500');
+    }
   }
-}
 
-function validateEmail(inputElement) {
-  const email = inputElement.value.trim();
-  const emailError = document.getElementById('emailError');
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function validateEmail(inputElement) {
+    const email = inputElement.value.trim();
+    const emailError = document.getElementById('emailError');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  if (!email || !emailRegex.test(email)) {
-    emailError.textContent = 'Please enter a valid email address.';
-    emailError.classList.remove('hidden');
-    inputElement.classList.add('border-red-500'); 
-  } else {
-    emailError.textContent = '';
-    emailError.classList.add('hidden');
-    inputElement.classList.remove('border-red-500');
+    if (!email || !emailRegex.test(email)) {
+      emailError.textContent = 'Please enter a valid email address.';
+      emailError.classList.remove('hidden');
+      inputElement.classList.add('border-red-500');
+    } else {
+      emailError.textContent = '';
+      emailError.classList.add('hidden');
+      inputElement.classList.remove('border-red-500');
+    }
   }
-}
 
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('registerButton').addEventListener('click', async () => {
@@ -190,9 +181,9 @@ function validateEmail(inputElement) {
         const data = await response.json();
 
         if (response.ok) {
-          console.log(data);
-          alert( data.message || 'Registration successful. Please log in to continue.' );
-          window.location.href = '/log-in'; 
+     
+          alert(data.message || 'Registration successful. Please log in to continue.');
+          window.location.href = '/log-in';
         } else {
           document.getElementById('emailError').textContent = data.message || 'Registration failed.';
           document.getElementById('emailError').classList.remove('hidden');
@@ -204,4 +195,33 @@ function validateEmail(inputElement) {
       }
     });
   });
+  function checkEmailExistence(inputElement) {
+    const email = inputElement.value.trim();
+    const emailError = document.getElementById('emailError');
+  
+    if (email) {
+      fetch('/api/check-email-exist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          emailError.textContent = data.message;
+          emailError.classList.remove('hidden');
+          inputElement.classList.add('border-red-500');
+        } else {
+          emailError.textContent = '';
+          emailError.classList.add('hidden');
+          inputElement.classList.remove('border-red-500');
+        }
+      })
+      .catch(error => {
+        console.error('Error checking email existence:', error);
+        emailError.textContent = 'An error occurred while checking email.';
+        emailError.classList.remove('hidden');
+      });
+    }
+  }
 </script>

@@ -1,39 +1,55 @@
 const { renderAccountPage, renderProfileInformation, renderManageAddress, renderChangePassword, renderMyOrderHistory, renderOrderOverview } = require("./account-page-view")
-const { fetchUserById, updateUserAddress, updateUserInfo, updateUserPassword, comparePassword  } = require("./account-page-model")
+const { fetchUserById, updateUserAddress, updateUserInfo, updateUserPassword, comparePassword,fetchOrderByUser,fetchDetailOrder } = require("./account-page-model")
+
 const getAccountPage = async (req, res) => {
     const user = await fetchUserById(req.user.id);
     renderAccountPage(req, res, user);
 };
 
-const getProfileInformation = (req, res) => {
-    renderProfileInformation(req, res);
+const getProfileInformation = async (req, res) => {
+    const user = await fetchUserById(req.user.id);
+    renderProfileInformation(req, res, user);
 };
 
-const getManageAddress = (req, res) => {
-    renderManageAddress(req, res);
+const getManageAddress = async (req, res) => {
+    const user = await fetchUserById(req.user.id);
+    renderManageAddress(req, res,user);
 };
 
-const getChangePassword = (req, res) => {
-    renderChangePassword(req, res);
+const getChangePassword = async (req, res) => {
+    const user = await fetchUserById(req.user.id);
+    renderChangePassword(req, res,user);
 };
 
-const getMyOrderHistory = (req, res) => {
-    renderMyOrderHistory(req, res);
+const getMyOrderHistory = async (req, res) => {
+    const order = await fetchOrderByUser(req.user.id);
+    const user = await fetchUserById(req.user.id);
+ 
+    renderMyOrderHistory(req, res,order,user);
 };
 
-const getOrderOverview = (req, res) => {
-    renderOrderOverview(req, res);
+const getOrderOverview = async (req, res) => {
+    const user = await fetchUserById(req.user.id);
+    const orderId = req.query.id;
+    const order= await fetchDetailOrder(orderId,req.user.id);
+   
+    renderOrderOverview(req, res,order,user);
 };
 
 async function updateInfo(req, res) {
     const { fullName, sex, phone, bio } = req.body;
+    const avatar = req.file; 
+
     const userId = req.user.id;
-    console.log("user", fullName, sex, phone, bio);
+
+    console.log('avatar', avatar); 
+
     try {
-        await updateUserInfo(userId, fullName, sex, phone, bio);
-        res.json({ message: "User information updated successfully!" });
+        const result = await updateUserInfo(userId, fullName, sex, phone, bio, avatar);
+        res.json(result);
     } catch (error) {
-        res.json({ message: "An error occurred while updating user information." });
+        console.error('Error updating user:', error);
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -52,9 +68,9 @@ async function updateAddress(req, res) {
 
 
 async function changePassword(req, res) {
-   
+
     const { oldPassword, newPassword, repeatNewPassword } = req.body;
-    
+
     const userId = req.user.id;
     try {
         const user = await fetchUserById(userId);
@@ -62,7 +78,7 @@ async function changePassword(req, res) {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: "Password is incorrect." });
         }
-       
+
         if (oldPassword === newPassword) {
             return res.status(400).json({ message: "New password must be different from old password." });
         }

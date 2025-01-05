@@ -3,7 +3,7 @@
   <section id="sidebar" class="hidden w-[300px] flex-shrink-0 px-4 lg:block">
     <div class="border-b py-5">
       <div class="flex items-center">
-        <img width="40px" height="40px" class="rounded-full object-cover" src="images/avatar-photo.png"
+        <img width="40px" height="40px" class="rounded-full object-cover" src="<%= user_db.avatar ? user_db.avatar : 'images/avatar-photo.png' %>"
           alt="Red woman portrait" />
         <div class="ml-5">
           <p class="font-bold">
@@ -69,105 +69,69 @@
 
   <!-- option cards  -->
 
-  <div class="mb-5 flex items-center justify-between px-5 md:hidden">
-    <div class="flex gap-3" id="profile-img">
-      <div class="py-5">
-        <div class="flex items-center">
-          <img width="40px" height="40px" class="rounded-full object-cover" src="images/avatar-photo.png"
-            alt="Red woman portrait" />
-          <div class="ml-5">
-            <p class="font-medium text-gray-500">Hello,</p>
-            <p class="font-bold">Sarah Johnson</p>
-          </div>
-        </div>
+  <div class="flex w-full flex-col gap-8">
+    <form id="profile-form" class="flex w-full flex-col gap-3" method="POST" action="/api/update-profile">
+      <div class="flex w-full flex-col">
+        <label for="avatar">Avatar Image</label>
+        <input type="file" name="avatar"
+          class="mx-auto ml-5 flex w-full justify-center border-yellow-400 text-sm outline-none file:mr-4 file:bg-amber-400 file:py-2 file:px-4 file:text-sm file:font-semibold" />
       </div>
-    </div>
+      <div class="flex w-full flex-col">
+        <label class="flex" for="name">Full Name</label>
+        <input class="w-full border px-4 py-2 lg:w-1/2" type="text" name="fullName" placeholder="<%=user_db.fullName%>" />
+      </div>
 
-    <div class="flex gap-3 ml-auto">
-      <button id="profile-settings-btn" class="border bg-amber-400 py-2 px-2">
-        Profile settings
-      </button>
-    </div>
-  </div>
+      <!-- Sex -->
+      <div class="flex w-full flex-col">
+        <label class="flex" for="sex">Sex</label>
+            <select id="sex" name="sex" class="w-full border px-4 py-2 lg:w-1/2">
+              <option value="" <%= !user_db.sex ? 'selected' : '' %>>Select Gender</option> <!-- Chọn "Select Gender" khi giới tính không có -->
+              <option value="male" <%= user_db.sex === 'Male' ? 'selected' : '' %>>Male</option>
+              <option value="female" <%= user_db.sex === 'Female' ? 'selected' : '' %>>Female</option>
+            </select>
+            
+      </div>
 
-  <!-- /option cards  -->
+      <div class="flex w-full flex-col">
+        <label class="flex" for="phone">Phone</label>
+        <input class="w-full border px-4 py-2 lg:w-1/2" type="tel" name="phone" placeholder="<%= user_db.phone ? user_db.phone : 'Enter your phone number' %>" />
+      </div>
 
-  <!-- /-->
 
+      <div class="flex flex-col">
+        <label for="bio">Bio</label>
+        <textarea class="w-full border px-4 py-2 text-gray-500 outline-none lg:w-1/2" name="bio" cols="30"  placeholder="<%= user_db.bio ? user_db.bio : 'Your Bio' %>"
+          rows="10"></textarea>
+      </div>
 
-  <!-- form  -->
-  <form id="profile-form" class="flex w-full flex-col gap-3" method="POST" action="/api/update-profile">
-    <div class="flex w-full flex-col">
-      <label class="flex" for="name">Full Name<span
-          class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
-      <input class="w-full border px-4 py-2 lg:w-1/2" type="text" name="fullName" placeholder="Your Full Name" />
-    </div>
-
-    <!-- Sex -->
-    <div class="flex w-full flex-col">
-      <label class="flex" for="sex">Sex<span
-          class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
-      <select id="sex" name="sex" class="w-full border px-4 py-2 lg:w-1/2">
-        <option value="male">Male</option>
-        <option value="female" selected>Female</option>
-      </select>
-    </div>
-
-    <div class="flex w-full flex-col">
-      <label class="flex" for="phone">Phone<span
-          class="block text-sm font-medium text-slate-700 after:ml-0.5 after:text-red-500 after:content-['*']"></span></label>
-      <input class="w-full border px-4 py-2 lg:w-1/2" type="tel" name="phone" placeholder="Enter your phone number" />
-    </div>
-
-    <div class="flex flex-col">
-      <label for="">Bio</label>
-      <textarea class="w-full border px-4 py-2 text-gray-500 outline-none lg:w-1/2" name="bio" cols="30"
-        rows="10"></textarea>
       <button type="submit" class="mt-4 w-40 bg-violet-900 px-4 py-2 text-white">
         Save changes
       </button>
-    </div>
-  </form>
+    </form>
+  </div>
 
   <!-- /form  -->
 
 
 </section>
 <script>
-  document
-    .getElementById("profile-settings-btn")
-    .addEventListener("click", () => {
-      const sidebar = document.getElementById("sidebar");
-      const profileImg = document.getElementById("profile-img");
-      sidebar.classList.toggle("hidden");
-      profileImg.classList.toggle("hidden");
-    });
-
   document.getElementById('profile-form').addEventListener('submit', async function (event) {
     event.preventDefault();
 
+   
     const formData = new FormData(this);
-    const formObject = {};
-
-
-    formData.forEach((value, key) => {
-      formObject[key] = value;
-    });
 
     try {
       const response = await fetch('/api/update-profile', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formObject),
+        body: formData, 
       });
 
       const result = await response.json();
       console.log('API response:', result);
-      if (response.ok) {
 
-        window.location.href = '/account-page';
+      if (response.ok) {
+        window.location.href = '/account-page'; 
       } else {
         alert('Failed to update profile: ' + result.message);
       }
