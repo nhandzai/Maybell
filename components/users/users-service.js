@@ -21,9 +21,10 @@ async function checkEmailExist(email) {
 async function sendResetPasswordEmail(email) {
     try {
         
-        // tao password ngau nhien 10 ki tu
+        
         const newPassword = Math.random().toString(36).slice(-10);
-        await users.update({ password: newPassword }, { where: { email } });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await users.update({ password: hashedPassword }, { where: { email } });
 
         await sendEmail(email, 'Reset Your Password', ` Your new password: ${newPassword}`);
     }

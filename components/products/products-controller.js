@@ -51,7 +51,7 @@ async function pagingReviews(req, res, next) {
         include: [
           {
             model: db.users,
-            attributes: ['fullName'],
+            attributes: ['fullName', 'avatar'],
             where: { id: db.Sequelize.col('reviews.userId') },
             required: false
           }

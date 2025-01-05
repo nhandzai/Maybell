@@ -36,7 +36,7 @@
           <img class="cursor-pointer" src="<%= image.image %>" alt="<%= product.name %> image" />
         </div>
         <% }) %>
-      
+
     </div>
     <!-- /image gallery  -->
   </div>
@@ -80,38 +80,24 @@
     <form id="addToCartForm-${product.id}" method="POST" action="/api/add-to-cart" class="mt-6">
       <label for="quantity" class="pb-2 text-xs text-gray-500">Quantity</label>
       <div class="flex items-center">
-        <button 
-          type="button"
-          id="decrement"
+        <button type="button" id="decrement"
           class="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100">
           &minus;
         </button>
-    
-        <input 
-          type="number" 
-          id="quantity" 
-          name="quantity" 
-          value="1" 
-          min="1" 
+
+        <input type="number" id="quantity" name="quantity" value="1" min="1"
           class="flex h-8 w-16 text-center border-t border-b" />
-    
-        <button 
-          type="button"
-          id="increment"
+
+        <button type="button" id="increment"
           class="flex h-8 w-8 cursor-pointer items-center justify-center border duration-100 hover:bg-neutral-100">
           &#43;
         </button>
-    
-        <input
-          name="id"
-          value="<%= product.id %>"
-          hidden
-        />
+
+        <input name="id" value="<%= product.id %>" hidden />
       </div>
-    
+
       <div class="mt-7 flex flex-row items-center gap-6">
-        <button
-          type="submit"
+        <button type="submit"
           class="flex h-12 w-1/3 items-center justify-center bg-violet-900 text-white duration-100 hover:bg-blue-800">
           Add to cart
         </button>
@@ -172,7 +158,8 @@
     <% product.reviews.forEach(review=> { %>
       <article class="border-b border-solid">
         <div class="flex items-center mb-4">
-          <img class="w-10 h-10 me-4 rounded-full" src="images/avatar-photo.png" alt="">
+          <img class="w-10 h-10 me-4 rounded-full"
+            src="<%= review.user.avatar ? review.user.avatar : 'images/avatar-photo.png' %>" alt="">
           <div class="font-medium">
 
             <p>
@@ -265,18 +252,8 @@
             </p>
             <div>
               <form id="addToCartForm-${product.id}" method="POST" action="/api/add-to-cart">
-                <input 
-                type="number" 
-                id="quantity" 
-                name="quantity" 
-                value="1" 
-                hidden 
-                />
-                <input
-                name="id"
-                value="<%= product.id %>"
-                hidden
-                />
+                <input type="number" id="quantity" name="quantity" value="1" hidden />
+                <input name="id" value="<%= product.id %>" hidden />
                 <button class="my-5 h-10 w-full bg-violet-900 text-white" type="submit">
                   Add to cart
                 </button>
