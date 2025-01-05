@@ -50,17 +50,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true,  
     },
-    googleId: {  // Thêm trường googleId
+    googleId: { 
       type: DataTypes.STRING,
       allowNull: true,
     },
-    isVerified: {  // Thêm trường isVerified
+    isVerified: { 
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    avatar: {  // Thêm trường avatar (URL ảnh)
+    avatar: {  
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    isBan: {  
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,

@@ -59,9 +59,9 @@ module.exports = (passport) => {
                 });
 
                 const verificationToken = crypto.randomBytes(32).toString('hex');
-                const expiry = 24 * 60 * 60; // 24 giờ (TTL)
+                const expiry = 24 * 60 * 60; 
                 await client.set(`verify:${verificationToken}`, newUser.id, { EX: expiry });
-                const verificationLink = `https://maybell-final.onrender.com/auth/verify-email?token=${verificationToken}`;
+                const verificationLink = `http://localhost:3000/auth/verify-email?token=${verificationToken}`;
                 await sendEmail(newUser.email, 'Verify Your Email', `Click the link to verify your account: ${verificationLink}`);
 
 
@@ -77,7 +77,7 @@ module.exports = (passport) => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'https://maybell-final.onrender.com/google/callback',//'https://maybell-test.onrender.com/google/callback', '/google/callback'
+                callbackURL: '/google/callback',//'https://maybell-test.onrender.com/google/callback', '/google/callback'
                 passReqToCallback: true,
             },
             async (req, accessToken, refreshToken, profile, done) => {
@@ -101,13 +101,14 @@ module.exports = (passport) => {
                         const verificationToken = crypto.randomBytes(32).toString('hex');
                         const expiry = 24 * 60 * 60; // 24 giờ (TTL)
                         await client.set(`verify:${verificationToken}`, user.id, { EX: expiry });
-                        const verificationLink = `https://maybell-final.onrender.com/auth/verify-email?token=${verificationToken}`;
+                        const verificationLink = `http://localhost:3000/auth/verify-email?token=${verificationToken}`;
                         await sendEmail(user.email, 'Verify Your Email', `Click the link to verify your account: ${verificationLink}`);
 
 
                         return done(null, user);
                     } else if (action === 'login') {
                         const user = await users.findOne({ where: { googleId: profile.id } });
+                        console.log(user);
                         if (!user) {
                             return done(null, false, { message: 'Account does not exist' });
                         }
@@ -135,7 +136,7 @@ module.exports = (passport) => {
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await users.findByPk(id, {
-                attributes: ['id', 'fullName', 'email', 'avatar'],
+                attributes: ['id', 'fullName', 'email'],
             });
             done(null, user);
         } catch (error) {

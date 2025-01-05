@@ -76,7 +76,8 @@ function updatePaging() {
                 reviewElement.classList.add("border-b", "border-solid");
                 reviewElement.innerHTML = `
             <div class="flex items-center mb-4">
-              <img class="w-10 h-10 me-4 rounded-full"   src="${review.user.avatar}?${review.user.avatar} : 'images/avatar-photo.png'" alt="">
+              <img class="w-10 h-10 me-4 rounded-full"   src="${review.user.avatar || 'images/avatar-photo.png'}"
+ alt="">
               <div class="font-medium">
                 <p>${review.user.fullName}</p>
               </div>

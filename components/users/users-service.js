@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { users } = require('../../library/models');
 const { sendEmail } = require('../mail/sendMail.js');
 require('dotenv').config();
-// hàm check xem email pass word có null hay khôngkhông
+
 
 async function checkPasswordEmailExist(email) {
     const user = await users.findOne({ where: { email } });
@@ -23,7 +23,7 @@ async function sendResetPasswordEmail(email) {
         
         
         const newPassword = Math.random().toString(36).slice(-10);
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
         await users.update({ password: hashedPassword }, { where: { email } });
 
         await sendEmail(email, 'Reset Your Password', ` Your new password: ${newPassword}`);
