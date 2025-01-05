@@ -21,6 +21,8 @@ module.exports = (passport) => {
                 if (!user.isVerified) {
                     return done(null, false, { message: 'Please verify your email first.' });
                 }
+                if (!user.isBan)
+                    return done(null, false, { message: 'Your account has been banned.' });
 
                 const isPasswordValid = await bcrypt.compare(password, user.password);
                 if (!isPasswordValid) {
@@ -59,7 +61,7 @@ module.exports = (passport) => {
                 const verificationToken = crypto.randomBytes(32).toString('hex');
                 const expiry = 24 * 60 * 60; // 24 giờ (TTL)
                 await client.set(`verify:${verificationToken}`, newUser.id, { EX: expiry });
-                const verificationLink = `http://localhost:3000/auth/verify-email?token=${verificationToken}`;
+                const verificationLink = `https://maybell-final.onrender.com/auth/verify-email?token=${verificationToken}`;
                 await sendEmail(newUser.email, 'Verify Your Email', `Click the link to verify your account: ${verificationLink}`);
 
 
@@ -75,7 +77,7 @@ module.exports = (passport) => {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: 'https://maybell-test.onrender.com/google/callback'  ,//'https://maybell-test.onrender.com/google/callback', '/google/callback'
+                callbackURL: 'https://maybell-final.onrender.com/google/callback',//'https://maybell-test.onrender.com/google/callback', '/google/callback'
                 passReqToCallback: true,
             },
             async (req, accessToken, refreshToken, profile, done) => {
@@ -99,7 +101,7 @@ module.exports = (passport) => {
                         const verificationToken = crypto.randomBytes(32).toString('hex');
                         const expiry = 24 * 60 * 60; // 24 giờ (TTL)
                         await client.set(`verify:${verificationToken}`, user.id, { EX: expiry });
-                        const verificationLink = `http://localhost:3000/auth/verify-email?token=${verificationToken}`;
+                        const verificationLink = `https://maybell-final.onrender.com/auth/verify-email?token=${verificationToken}`;
                         await sendEmail(user.email, 'Verify Your Email', `Click the link to verify your account: ${verificationLink}`);
 
 
@@ -112,6 +114,8 @@ module.exports = (passport) => {
                         if (!user.isVerified) {
                             return done(null, false, { message: 'Please verify your email first.' });
                         }
+                        if (!user.isBan)
+                            return done(null, false, { message: 'Your account has been banned.' });
                         return done(null, user);
                     } else {
                         return done(null, false, { message: 'Invalid action.' });
@@ -131,7 +135,7 @@ module.exports = (passport) => {
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await users.findByPk(id, {
-                attributes: ['id', 'fullName', 'email','avatar'],
+                attributes: ['id', 'fullName', 'email', 'avatar'],
             });
             done(null, user);
         } catch (error) {
