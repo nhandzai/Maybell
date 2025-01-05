@@ -180,10 +180,11 @@
       });
 
       if (response.ok) {
-
+        const message = await response.json();
+        alert(message.message);
         window.location.href = '/my-order-history';
       } else {
-        // thong bao messagemessage được gửi về
+      
         const message = await response.json();
         alert(message.message);
         

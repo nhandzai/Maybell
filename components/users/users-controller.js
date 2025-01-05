@@ -70,7 +70,7 @@ const getLogout = (req, res) => {
 const verifyEmail = async (req, res) => {
     const { token } = req.query;
 
-   
+
     try {
         const userId = await client.get(`verify:${token}`);
 
@@ -79,7 +79,7 @@ const verifyEmail = async (req, res) => {
             return res.redirect('/');
         }
 
-      
+
         const user = await users.findOne({ where: { id: userId } });
         if (!user) {
             req.flash('error', 'Invalid or expired token.');
@@ -100,6 +100,7 @@ const verifyEmail = async (req, res) => {
 };
 
 const handleGoogleCallback = async (req, res, next) => {
+    const sessionKey = `cart:${req.sessionID}`;
     passport.authenticate('google', async (err, user, info) => {
         if (err) {
             req.flash('error', 'Error during Google authentication: ' + err.message);
@@ -118,11 +119,15 @@ const handleGoogleCallback = async (req, res, next) => {
             if (action === 'login') {
 
 
-                req.logIn(user, (err) => {
+                req.logIn(user, async (err) => {
                     if (err) {
                         req.flash('error', 'Login failed.');
                         return res.redirect('/log-in');
                     }
+                    const userId = user.id;
+                    console.log('sessionKey', sessionKey);
+                    console.log('userId', userId);
+                    await mergeCart(userId, sessionKey);
 
 
                     req.flash('success', 'Login successful!');
@@ -156,10 +161,10 @@ const checkEmailExist = async (req, res) => {
         const { email } = req.body;
         const user = await userServices.checkEmailExist(email);
         if (!user) {
-           
+
             return res.status(400).json({ success: false, message: 'Email not found.' });
         }
-        
+
         res.status(200).json({ success: true, message: 'Email found.' });
     }
     catch (error) {

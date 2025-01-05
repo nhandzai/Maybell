@@ -94,6 +94,9 @@ async function handleCheckout(userId, paymentMethodId, address, country, city) {
             { where: { id: item.product.id } }
         );
     }
+    await db.carts.destroy({
+        where: { userId },
+    });
 
     return { success: true, orderId: order.id, totalCartPrice: cartItems.totalCartPrice };
 }
